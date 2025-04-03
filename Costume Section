@@ -1,0 +1,81 @@
+- Create new file in "Section" Folder. e.g. "image-text.liquid"
+
+{% schema %}
+  {
+    "name": "Image Text",
+    "settings": []
+  }
+{% endschema %}
+
+1)  when you create new file you will get above code. 
+  name:- you can add name of your section name. 
+  settings :- in settings, you can add multiple settings. 
+   i.e. you can add heading, image picker for photo. 
+        you can add textareas for add text, 
+        you can set font size for text.....
+
+e.g.
+
+"settings": [
+      {
+        "type": "header",
+        "content": "Select Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "img-id",
+        "label": "Main Image"  
+      },
+      {
+        "type": "header",
+        "content": "Add Content"
+      },
+      {
+        "type": "text",
+         "id": "content-title",
+         "label": "Main Title"
+      },
+      {
+        "type": "textarea",
+        "id": "content-para",
+        "label": "Paragraph"
+      }
+    ],
+
+2)  after this , we will add html of our section. above the scema tag. 
+
+<div class="sec-imgtext">
+  <div class="container flex">
+    <div class="leftside">
+      <img
+        src="{{ section.settings.img-id | img_url: 'master' }}"
+        alt="Image alt text"
+      />
+    </div>
+    <div class="rightside">
+      <h2 class="main-title">{{ section.settings.content-title }}</h2>
+      <p class="main-para">{{ section.settings.content-para }}</p>
+    </div>
+  </div>
+</div>
+
+
+3) Now you can add "Presets". 
+  -: Presets is use for you can add this section multiple times.
+  -: add presets after settings.
+
+"presets": [
+      {
+        "name": "Image Text"
+      }
+    ]
+
+4) You Can add "stylesheet" for add css
+- after scema end you can add 
+
+{% stylesheet %}
+  .main-title{
+    font-size: 50px !important;
+    color: #6eaf19;
+  }
+{% endstylesheet %}
