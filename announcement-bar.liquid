@@ -1,0 +1,199 @@
+
+<announcement-bar >
+   <div class="annbar bg-black text-white text-center py-1.5">
+     <p>Welcome to My Store</p>
+   </div>
+ </announcement-bar>
+
+
+{% schema %}
+  {
+    "name": "Announcement Bar",
+    "limit": 1,
+    "enabled_on": {
+      "groups": ["header"]
+    },
+    "settings": [
+      {
+      "type": "header",
+      "content": "Announcement Bar"    
+      },
+      {
+        "type": "checkbox",
+        "id": "show_close",
+        "default": true,
+         "label": "Show close button"
+      },
+      {
+        "type": "checkbox",
+        "id": "homepage_only",
+        "default": true,
+         "label": "Home page only"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_mobile",
+        "default": true,
+         "label": "Show on mobile"
+      },
+      {
+        "type": "header",
+        "content": "Content settings"
+      },
+      {
+       "type": "checkbox",
+      "id": "uppercase",
+      "label": "Uppercase"
+      },
+      {
+      "type": "range",
+      "id": "font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "label": "Font-size",
+      "unit": "px",
+      "default": 12
+    },
+      {
+      "type": "select",
+      "id": "font_weight",
+      
+      "options": [
+        {
+          "value": "400",
+          "label": "400"
+        },
+        {
+          "value": "600",
+          "label": "600"
+        },
+        {
+          "value": "800",
+          "label": "800"
+        }
+      ],
+      "default": "400",
+      "label": "font_weight"
+    },
+      {
+        "type": "header",
+        "content": "Marquee setting",
+        "info": "Marquee shows only when the number of announcements is more than 1."
+    },
+      {
+      "type": "range",
+      "id": "speed",
+      "label": "Speed",
+      "default": 15,
+      "min": 3,
+      "max": 30,
+      "step": 1,
+      "unit": "s"
+    },
+       {
+      "type": "range",
+      "id": "space_between",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "label": "Spacing between item",
+      "unit": "px",
+      "default": 50
+    },
+       {
+      "type": "select",
+      "id": "icon_between_item",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "dot",
+          "label": "Dot"
+        },
+        {
+          "value": "star",
+          "label": "Star"
+        }
+      ],
+      "default": "none",
+      "label": "Icon between item"
+    },
+      {
+        "type": "header",
+        "content": "Slider setting",
+        "info": "Slider work only when the number of announcements is more than 1."
+      },
+       {
+      "type": "range",
+      "id": "change_every",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "label": "Change every",
+      "unit": "s",
+      "default": 3
+    },
+       {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "default": 12,
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "default": 12,
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px"
+    }
+    ],
+    "max_blocks": 5,
+    "blocks": [
+      {
+        "type": "announcement",
+         "name": "Announcement",
+         "settings": [
+            {
+               "type": "inline_richtext",
+               "id": "text",
+               "default": "Welcome to our store",
+               "label": "Text"
+            },
+           {
+              "type": "text",
+              "id": "countdown_deadline",
+              "label": "Countdown",
+              "info": "e.g. mm-dd-yyyy"
+            }
+         ]
+      }
+    ],
+  "presets": [
+    {
+      "name": "Announcement Bar",
+      "blocks": [
+        {
+           "type": "announcement",
+           "settings": {
+            "text": "Welcome to our store"
+          }
+        }
+      ]
+    } 
+  ]
+  }
+{% endschema %}
