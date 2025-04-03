@@ -4,3 +4,14 @@ Create "header-group.json" file in Section Folder.
   i.e. top bar slider. main header section.
 
 - create main header section "header.liquid".
+
+- create "announcement-bar" section  "announcement-bar.liquid"
+
+- open "theme.liquid" file and add below code:
+  <body>
+       {%
+        liquid
+          sections 'header-group'
+        %}
+      {{ content_for_layout }}
+  </body>
