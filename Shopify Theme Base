@@ -1,0 +1,157 @@
+shopify-theme/
+├── assets/
+│   ├── base.css
+│   │   ```css
+│   │   body {
+│   │       font-family: Arial, sans-serif;
+│   │       margin: 0;
+│   │       padding: 0;
+│   │   }
+│   │   ```
+│   ├── theme.js
+│   │   ```js
+│   │   document.addEventListener("DOMContentLoaded", function() {
+│   │       console.log("Theme JS Loaded");
+│   │   });
+│   │   ```
+├── config/
+│   ├── settings_schema.json
+│   │   ```json
+│   │   [
+│   │       {
+│   │           "name": "Theme Settings",
+│   │           "settings": []
+│   │       }
+│   │   ]
+│   │   ```
+│   ├── settings_data.json
+│   │   ```json
+│   │   {
+│   │       "current": {}
+│   │   }
+│   │   ```
+├── layout/
+│   ├── theme.liquid
+│   │   ```liquid
+│   │   <!DOCTYPE html>
+│   │   <html>
+│   │   <head>
+│   │       <title>{{ shop.name }}</title>
+│   │       {{ content_for_header }}
+│   │   </head>
+│   │   <body>
+│   │       {{ content_for_layout }}
+│   │   </body>
+│   │   </html>
+│   │   ```
+│   ├── password.liquid
+│   │   ```liquid
+│   │   <h1>Coming Soon</h1>
+│   │   ```
+├── locales/
+│   ├── en.default.json
+│   │   ```json
+│   │   {
+│   │       "welcome": "Welcome to our store!"
+│   │   }
+│   │   ```
+├── sections/
+│   ├── header.liquid
+│   │   ```liquid
+│   │   <header>
+│   │       <h1>{{ shop.name }}</h1>
+│   │   </header>
+│   │   ```
+│   ├── footer.liquid
+│   │   ```liquid
+│   │   <footer>
+│   │       <p>&copy; {{ shop.name }} - All rights reserved.</p>
+│   │   </footer>
+│   │   ```
+│   ├── main-banner.liquid
+│   │   ```liquid
+│   │   <section class="banner">
+│   │       <h2>Welcome to {{ shop.name }}</h2>
+│   │   </section>
+│   │   ```
+├── snippets/
+│   ├── product-card.liquid
+│   │   ```liquid
+│   │   <div class="product-card">
+│   │       <h3>{{ product.title }}</h3>
+│   │       <p>{{ product.price | money }}</p>
+│   │   </div>
+│   │   ```
+│   ├── social-icons.liquid
+│   │   ```liquid
+│   │   <div class="social-icons">
+│   │       <a href="#">Facebook</a>
+│   │       <a href="#">Twitter</a>
+│   │   </div>
+│   │   ```
+├── templates/
+│   ├── index.json
+│   │   ```json
+│   │   {
+│   │       "sections": {
+│   │           "main": {
+│   │               "type": "main-banner"
+│   │           }
+│   │       },
+│   │       "order": ["main"]
+│   │   }
+│   │   ```
+│   ├── product.json
+│   │   ```json
+│   │   {
+│   │       "sections": {
+│   │           "product": {
+│   │               "type": "product-card"
+│   │           }
+│   │       },
+│   │       "order": ["product"]
+│   │   }
+│   │   ```
+│   ├── collection.json
+│   │   ```json
+│   │   {
+│   │       "sections": {
+│   │           "collection": {
+│   │               "type": "collection"
+│   │           }
+│   │       },
+│   │       "order": ["collection"]
+│   │   }
+│   │   ```
+│   ├── cart.json
+│   │   ```json
+│   │   {
+│   │       "sections": {
+│   │           "cart": {
+│   │               "type": "cart"
+│   │           }
+│   │       },
+│   │       "order": ["cart"]
+│   │   }
+│   │   ```
+│   ├── customers/
+│   │   ├── login.liquid
+│   │   │   ```liquid
+│   │   │   <h2>Login</h2>
+│   │   │   ```
+│   │   ├── register.liquid
+│   │   │   ```liquid
+│   │   │   <h2>Register</h2>
+│   │   │   ```
+│   │   ├── account.liquid
+│   │   │   ```liquid
+│   │   │   <h2>Account</h2>
+│   │   │   ```
+│   │   ├── order.liquid
+│   │   │   ```liquid
+│   │   │   <h2>Order Details</h2>
+│   │   │   ```
+│   │   ├── reset_password.liquid
+│   │   │   ```liquid
+│   │   │   <h2>Reset Password</h2>
+│   │   │   ```
