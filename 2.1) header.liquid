@@ -1,0 +1,143 @@
+<header class="relative" style="background-color: {{ section.settings.bg_color }};">
+  <div class="header_inner flex justify-between items-center px-8 py-{{ section.settings.padding_top_bottom}}">
+    <div class="header__logo">
+      <a href="/"> <img src="{{ section.settings.logo | default: settings.logo |img_url: 'master' }}" alt="Store Logo" style="width:{{ section.settings.logowidth }}px;" /> </a>
+    </div>
+    <div class="header__menu">
+      <nav class="menu">
+        <ul class="flex gap-6">
+          {% if section.settings.menu %} {% for link in linklists[section.settings.menu].links %}
+          <li>
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+          {% endfor %} {% else %}
+          <li>No menu selected</li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+    <div class="header__action flex gap-6">
+
+       {% if section.settings.show_account %}
+         {% if user.logged_in %}
+           Welcome back, {{user.name}}!
+           {% else %}
+            <div class="login">
+               <a href="/account" class="text-white-700 hover:text-white-500">Login</a>
+            </div>
+         {% endif %}
+       {% endif %}
+
+       {% if section.settings.show_search %}
+          <div class="header_search"><i class='bx bx-search'></i></div>
+       {% endif %}
+
+      
+     
+       {% if section.settings.show_wishlist %}
+          <div class="header_wishlist"><i class='bx bx-heart'></i></div>
+       {% endif %}
+
+       {% if section.settings.show_cart %}
+         <div class="header_cart"><i class='bx bx-shopping-bag'></i></div>
+       {% endif %}
+      
+      
+    </div>
+  </div>
+</header>
+
+{% schema %} 
+  {
+  "name": "Header",
+    "limit": 1,
+    "enabled_on": {
+      "groups": ["header"]
+    },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo Setting",
+      "info": "You can edit header logo from here"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logowidth",
+      "label": "Logo Width",
+      "default": 80,
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Menu  Setting",
+      "info": "You can edit menu from here"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Addons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show Search Button",
+      "default" : true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show Account Button",
+      "default" : true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Show Wishlist Button",
+      "default" : true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Show Cart Button",
+      "default" : true
+    },
+    {
+      "type": "header",
+      "content": "Section Setting"
+    },
+     {
+      "type": "range",
+      "id": "padding_top_bottom",
+      "label": "Padding Top Bottom",
+      "default": 6,
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+       "type": "color",
+       "id": "bg_color",
+       "label": "Select Section Background",
+      "default": "#fff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Default Header"
+    }
+  ]
+}
+ {% endschema %}
