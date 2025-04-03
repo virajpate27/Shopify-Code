@@ -1,0 +1,30 @@
+🔹 Basic Input Types
+"text" -	A single-line text input.
+"textarea" -	A multi-line text input.
+"richtext" -	A rich text editor with formatting options.
+"html" -	Allows raw HTML input.
+"checkbox" -	A simple toggle (true/false).
+"radio" -	A set of radio buttons (select one option).
+"select" -	A dropdown menu to choose from multiple options.
+
+🎨 Design & Styling Types
+"color"	A color picker for selecting a single color.
+"color_scheme"	Allows sections to use predefined color schemes.
+"color_scheme_group"	Lets users create and manage multiple color schemes.
+
+🔤 Typography & Fonts
+"font_picker"	Lets users select fonts from Shopify’s built-in fonts.
+"range"	A slider to adjust font sizes or other numeric values.
+
+🔄 Media & Images
+"image_picker"	Allows users to upload or select an image.
+"video"	Embeds a video.
+"url"	Lets users input a URL.
+
+🔧 Advanced & Custom Types
+"blog"	Select a blog from the Shopify store.
+"collection"	Select a product collection.
+"product"	Select a single product.
+"article"	Select a single blog article.
+"page"	Select a page.
+"link_list"	Select a menu from Shopify's navigation.
