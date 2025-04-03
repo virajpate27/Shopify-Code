@@ -15,3 +15,30 @@ Create "header-group.json" file in Section Folder.
         %}
       {{ content_for_layout }}
   </body>
+
+- now open 'header-group.json' file. add below code
+  {
+  "type": "header",
+  "name": "Header Group",
+  "sections": {
+    "header_GzcVxd": {
+      "type": "header",
+      "settings": {
+        "logo": "shopify://shop_images/logo_1.svg",
+        "logowidth": 80,
+        "menu": "main-menu",
+        "show_search": true,
+        "show_account": true,
+        "show_wishlist": true,
+        "show_cart": true,
+        "padding_top_bottom": 6,
+        "bg_color": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "header_GzcVxd"
+  ]
+}
+
+Note : this code is only add "header". you can add "anncoun..bar" letter from customization.and code will add automaticaly. 
