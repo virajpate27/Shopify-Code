@@ -1,0 +1,6 @@
+Create "header-group.json" file in Section Folder.
+
+- in "header-group.json" we assign multiple header seactions. 
+  i.e. top bar slider. main header section.
+
+- create main header section "header.liquid".
