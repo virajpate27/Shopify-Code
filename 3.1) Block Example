@@ -1,0 +1,56 @@
+<div class="features-section">
+
+  {% for block in section.blocks %}
+    <div class="feature-item">
+      {% if block.settings.icon %}
+        <img src="{{ block.settings.icon | image_url }}" alt="">
+      {% endif %}
+
+      <h3>{{ block.settings.title }}</h3>
+      <p>{{ block.settings.description }}</p>
+    </div>
+  {% endfor %}
+  
+</div>
+
+
+
+
+{% schema %}
+  {
+    "name": "Features",
+    "settings": [],
+    "blocks": [
+      {
+        "type": "feature_item",
+        "name": "Feature Item",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "icon",
+            "label": "Icon"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Feature Title"
+          },
+          {
+            "type": "textarea",
+            "id": "description",
+            "label": "Description",
+             "default" : "Feature description goes here."
+          }
+        ]
+      }
+    ],
+    "max_blocks": 6,
+    "presets": [
+      {
+        "name": "Features Section",
+        "category": "Custom"
+      }
+    ]
+  }
+{% endschema %}
