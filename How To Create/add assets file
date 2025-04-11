@@ -1,0 +1,5 @@
+- Add your file in assets folder. 
+- include in theme.liquid file 
+  i.e. 
+  {{ 'slick.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
