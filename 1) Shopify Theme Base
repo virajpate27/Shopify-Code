@@ -155,3 +155,16 @@ shopify-theme/
 │   │   │   ```liquid
 │   │   │   <h2>Reset Password</h2>
 │   │   │   ```
+
+
+
+
+# Essential Files Explained:
+# - assets/: Contains CSS, JavaScript, images, and fonts.
+# - config/: Stores theme settings and customization schema.
+# - layout/: Defines base HTML structure for all pages.
+# - locales/: Handles translations for different languages.
+# - sections/: Defines dynamic sections for the theme editor.
+# - snippets/: Small reusable Liquid code snippets.
+# - templates/: JSON-based templates for each page type.
+# - customers/: Templates related to customer authentication.
