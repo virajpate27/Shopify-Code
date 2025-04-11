@@ -1,0 +1,60 @@
+- Blocks allow you to create modular, repeatable content inside a section.
+- Think of them like "mini-sections" that users can add, remove, and reorder in the theme editor.
+
+🔸 Example Use Case:
+Let’s say you're building a "Features Section" where the store owner can add multiple feature items (icon + title + description). That’s where blocks shine.
+
+
+NOTE : Example added in New File.
+
+🧠 Explanation:
+
+2. "name": "Features"
+This is the name that will appear in the Shopify theme editor for the section.
+
+3. "settings": []
+This is where you define global settings for the section (e.g., background color, layout options). In this example, it's empty.
+
+4. "blocks": []
+This array defines the repeatable block type(s) the section supports. You can define multiple block types.
+
+- This block has:
+"type": "feature_item" → Internal name for the block.
+
+"name": "Feature Item" → Display name in the theme editor.
+
+"settings": [] → Settings specific to each block.
+
+- Block Settings:
+
+- Setting Type	Purpose
+  image_picker	-> Let the user pick an icon/image.
+  text	        -> Title of the feature.
+  textarea	    -> Description text.
+
+5. "max_blocks": 6
+Limits the number of feature items that can be added to 6. You can change this if needed.
+
+6. "presets": []
+This provides a default layout for the section. It will be auto-added when you click "Add section" in the theme editor.
+
+
+🧱 HTML Output Section:
+<div class="features-section">
+  {% for block in section.blocks %}
+    <div class="feature-item">
+      {% if block.settings.icon %}
+        <img src="{{ block.settings.icon | image_url }}" alt="">
+      {% endif %}
+      <h3>{{ block.settings.title }}</h3>
+      <p>{{ block.settings.description }}</p>
+    </div>
+  {% endfor %}
+</div>
+
+✅ What This Does:
+   - Loops through each block added by the store admin.
+   - For each block:
+     :- Shows the image (icon), Displays the title, Shows the description
+
+
