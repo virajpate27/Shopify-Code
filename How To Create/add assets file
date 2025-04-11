@@ -1,8 +1,54 @@
 - Add your file in assets folder. 
 - include in theme.liquid file 
   i.e. 
-  {{ 'slick.css' | asset_url | stylesheet_tag }}
-  <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
+  <!-- Your custom CSS -->
+  {{ 'custom.css' | asset_url | stylesheet_tag }}
 
-- you can add code in section file. i.e.
-  {{ 'countdown.css' | asset_url | stylesheet_tag }}
+  <!-- Your custom JS -->
+  {{ 'custom.js' | asset_url | script_tag }}
+
+
+EXAMPLE : 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{ content_for_header }}
+  
+  <!-- Default Shopify styles -->
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+
+  <!-- Your custom CSS -->
+  {{ 'custom.css' | asset_url | stylesheet_tag }}
+</head>
+<body>
+  {{ content_for_layout }}
+
+  <!-- Your custom JS -->
+  {{ 'custom.js' | asset_url | script_tag }}
+</body>
+</html>
+
+
+
+✨ Using in Sections or Blocks Only
+
+{% stylesheet %}
+  .my-feature {
+    background: var(--color-background);
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('My section is loaded!');
+  });
+{% endjavascript %}
+
+
+🎯 Bonus: Inline vs External
+
+Method	Use When
+`{{ 'file.css' ->	asset_url
+{% stylesheet %}...{% endstylesheet %}  ->	For section-specific styling
+Inline <style>/<script> tags  ->	Only if necessary (usually not recommended for performance)
+
