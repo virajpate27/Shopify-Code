@@ -3,3 +3,6 @@
   i.e. 
   {{ 'slick.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
+
+- you can add code in section file. i.e.
+  {{ 'countdown.css' | asset_url | stylesheet_tag }}
