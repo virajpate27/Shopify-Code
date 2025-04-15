@@ -1,0 +1,21 @@
+1. Add a Field in settings_schema.json
+Example 
+{
+  "name": "Global Images",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "global_banner_image",
+      "label": "Global Banner Image"
+    }
+  ]
+}
+
+2. Use It in Any Section
+
+{% if settings.global_banner_image != blank %}
+  <img src="{{ settings.global_banner_image | img_url: 'master' }}" alt="Banner Image" class="w-full" />
+{% endif %}
+
+
+IMP : we use "settings.Id" for global fields.
