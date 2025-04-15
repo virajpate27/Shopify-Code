@@ -1,0 +1,6 @@
+1 ) Create a Snippet in Snippet Folder 
+   Example (snippets/menu-dropdown.liquid):
+
+2) Use the Snippet in a Template
+
+{% render 'menu-dropdown', link: link %}
