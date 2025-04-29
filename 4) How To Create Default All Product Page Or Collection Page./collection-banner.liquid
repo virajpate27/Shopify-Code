@@ -1,0 +1,97 @@
+{% liquid
+  assign section_st = section.settings
+  assign collection_title = section_st.collection-title
+  assign collection_desc = section_st.collection-desc
+  assign collection_img = section_st.collection-bg
+%}
+
+<section class="collection-banner">
+   <div class="bgimg text-center bg-cover" style="background-image: url({% if collection_img == blank %} {{ collection.featured_image | img_url:
+'medium' }} {% else %} {{ collection_img | img_url: 'medium' }} {% endif %}); padding-top:{{ section_st.padding_top }}px; padding-bottom:{{ section_st.padding_bottom }}px">
+
+     <!-- Collection Title -->
+     {% if collection_title == blank %}
+          <h1 class="font-semibold" style="font-size:{{ section_st.title-font-size }}px"> {{ collection.title }}</h1>  <!-- Default Collection Title -->
+        {% else %}
+          <h1 style="font-size:{{ section_st.title-font-size }}px">{{ collection_title }}</h1> <!-- Custume Collection Title -->
+     {% endif %}
+
+     <!-- Collection description -->
+     {% if collection_desc == blank %}
+          <p style="font-size:{{ section_st.desc-font-size}}px"> {{ collection.description }}</p>  <!-- Default Collection description -->
+        {% else %}
+          <p style="font-size:{{ section_st.desc-font-size }}px">{{ collection_desc}}</p> <!-- Custume Collection description -->
+     {% endif %}
+     
+   </div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "Collection Banner",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Collection Settings"
+      },
+      {
+        "type": "text",
+        "id": "collection-title",
+        "label": "Collection Title"
+      },
+      {
+        "type": "range",
+        "id": "title-font-size",
+        "label": "Title Font Size",
+        "default": 18,
+        "min": 8,
+        "max": 24,
+        "step": 1
+      },
+      {
+        "type": "textarea",
+         "id": "collection-desc",
+        "label": "Description"
+      },
+      {
+        "type": "range",
+        "id": "desc-font-size",
+        "label": "Description Font Size",
+        "default": 16,
+        "min": 8,
+        "max": 24,
+        "step": 1
+      },
+      {
+        "type": "image_picker",
+        "id": "collection-bg",
+         "label": "Collection Background"
+      },
+      {
+        "type": "header",
+         "content": "Section Spacing"
+      },
+      {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "default": 40,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+      {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "default": 40,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+    ]
+  }
+{% endschema %}
