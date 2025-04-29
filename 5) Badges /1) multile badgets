@@ -1,0 +1,15 @@
+open "main-collection-product-grid.liquid"
+
+<!-- Sold Out Badge -->
+  {% unless product.available %}
+    <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded z-10">
+      Sold Out
+    </span>
+  {% endunless %}
+
+  <!-- Sale Badge -->
+  {% if product.compare_at_price > product.price and product.available %}
+    <span class="absolute top-2 right-2 bg-yellow-500 text-white text-xs font-semibold px-2 py-1 rounded z-10">
+      Sale
+    </span>
+  {% endif %}
