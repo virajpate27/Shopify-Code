@@ -1,0 +1,14 @@
+ <!-- Modal Overlay -->
+<div id="quick-view-modal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+  <!-- Modal Container with Slide/Fade Animation -->
+  <div id="quick-view-box" class="bg-white rounded-lg shadow-lg w-full max-w-4xl mx-4 overflow-y-auto max-h-[90vh] transform scale-95 opacity-0 transition-all duration-300">
+    <div class="flex justify-end p-2">
+      <button onclick="closeQuickView()" class="text-gray-700 hover:text-red-500">
+        ✕
+      </button>
+    </div>
+    <div id="quick-view-content" class="p-4">
+      <!-- AJAX content goes here -->
+    </div>
+  </div>
+</div>
