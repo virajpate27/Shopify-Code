@@ -1,0 +1,32 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection_banner": {
+      "type": "collection-banner",
+      "settings": {
+        "collection-title": "",
+        "title-font-size": 22,
+        "collection-desc": "this is teesting new teth",
+        "desc-font-size": 18,
+        "collection-bg": "shopify://shop_images/1.png"
+      }
+    },
+
+    "main": {
+      "type": "main-collection-product-grid",
+      "settings": {}
+    }
+  },
+  "order": [
+     "collection_banner",
+    "main"
+  ]
+}
