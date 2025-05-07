@@ -1,0 +1,19 @@
+- We used Swiper JS library for slider 
+
+step 1) Add Swiper Library
+In your theme’s layout/theme.liquid file, before the closing </head>
+
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+
+<!-- Swiper JS (before </body>) -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+
+
+Step 2) Update sections/main-product.liquid code.
+Note : code in 2.1 file 
+
+Step 3) Initialize Swiper
+      - add js code of slider 
+Note : code in 2.1 file 
