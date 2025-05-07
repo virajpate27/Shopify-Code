@@ -1,0 +1,36 @@
+To implement an image lightbox on your Shopify product gallery using JSON templates, you can use GLightbox — a responsive, elegant lightbox library that supports galleries, zoom, and mobile gestures.
+
+ Step 1) Include GLightbox Library
+       - Add the following CDN links in your theme.liquid file, just before </head>:
+       <!-- GLightbox CSS -->
+         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+
+      <!-- GLightbox JS -->
+         <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+
+ Step 2) Modify Your Product Gallery Loop
+      <div class="swiper-slide">
+      <a href="{{ image | img_url: 'master' }}" class="glightbox" data-gallery="product-gallery">
+        <img
+         src="{{ image | img_url: '1024x1024' }}"
+         alt="{{ product.title }}"
+         class="w-full object-cover rounded-lg"
+       >
+     </a>
+     </div>
+
+
+Step 3) Initialize GLightbox
+    - At the bottom of the section (after Swiper init), add:
+    <script>
+  const lightbox = GLightbox({
+    selector: '.glightbox',
+    touchNavigation: true,
+    loop: true,
+    zoomable: true
+  });
+</script>
+
+
+Note : Code in 4.1 file 
+
