@@ -1,0 +1,58 @@
+Step 1) -> Under the Templates folder, click “Add a new template.”
+        -> Choose product , templates/product.json
+
+
+
+Step 2) -> Code for product.json
+   {
+  "sections": {
+    "main-product": {
+      "type": "main-product"
+    },
+    "product-recommendations": {
+      "type": "product-recommendations"
+    }
+  },
+  "order": [
+    "main-product",
+    "product-recommendations"
+  ]
+}
+
+
+
+Step 3) -> Create Section main-product.liquid
+
+{% schema %}
+{
+  "name": "Main Product",
+  "tag": "section",
+  "class": "product-main",
+  "settings": []
+}
+{% endschema %}
+
+<div class="container mx-auto py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    {% if product.featured_image %}
+      <img src="{{ product.featured_image | img_url: '1024x' }}" alt="{{ product.title }}">
+    {% endif %}
+    <!-- More images if needed -->
+  </div>
+  <div>
+    <h1 class="text-2xl font-bold">{{ product.title }}</h1>
+    <p class="text-gray-700">{{ product.description }}</p>
+    <p class="text-xl font-semibold mt-2">{{ product.price | money }}</p>
+
+    <form method="post" action="/cart/add">
+      <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+      <button type="submit" class="mt-4 px-4 py-2 bg-blue-600 text-white">Add to cart</button>
+    </form>
+  </div>
+</div>
+
+
+NOTE: if you want create "product-recommendations" section you can create.
+
+
+
