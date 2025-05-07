@@ -1,0 +1,135 @@
+<div class="container max-w-2xl mx-auto py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+       <!-- Main Slider -->
+  <div class="swiper main-gallery mb-4">
+    <div class="swiper-wrapper">
+      {% for image in product.images %}
+        <div class="swiper-slide">
+          <a href="{{ image | img_url: 'master' }}" class="glightbox" data-gallery="product-gallery">
+          <img src="{{ image | img_url: '1024x1024' }}" alt="{{ product.title }}" class="w-full object-cover rounded-lg">
+         </a>
+          
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Navigation -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+
+  <!-- Thumbnail Slider -->
+  <div class="swiper thumb-gallery">
+    <div class="swiper-wrapper">
+      {% for image in product.images %}
+        <div class="swiper-slide">
+          <img src="{{ image | img_url: '200x200' }}" alt="{{ product.title }}" class="w-full object-cover border rounded-md cursor-pointer">
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+    
+  </div>
+  <div>
+   {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'title' %}
+        <h1 class="text-2xl font-bold">{{ product.title }}</h1>
+
+      {% when 'price' %}
+        <p class="text-xl text-red-600">{{ product.price | money }}</p>
+
+      {% when 'description' %}
+        <div class="prose">{{ product.description }}</div>
+
+      {% when 'form' %}
+        <form method="post" action="/cart/add">
+          <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+          <button type="submit" class="btn-primary">Add to cart</button>
+        </form>
+
+    {% endcase %}
+  {% endfor %}
+  </div>
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Main Product",
+    "tag": "section",
+    "class": "product-main",
+    "settings": [],
+    "blocks": [
+      {
+        "type": "@app"
+      },
+      {
+        "type": "title",
+        "name": "Product Title"
+      },
+      {
+        "type": "price",
+          "name": "Product Price"
+      },
+      {
+        "type": "description",
+        "name": "Product Description"
+      },
+      {
+      "type": "form",
+      "name": "Add to Cart Form"
+      }
+    ],
+    "max_blocks": 10,
+    
+  }
+{% endschema %}
+
+
+
+
+
+<style>
+  .swiper-slide-thumb-active img {
+  border: 2px solid #2563eb; /* Tailwind's blue-600 */
+  border-radius: 0.5rem;
+}
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const thumbSwiper = new Swiper(".thumb-gallery", {
+      spaceBetween: 10,
+      slidesPerView: 4,
+      freeMode: true,
+      watchSlidesProgress: true,
+      breakpoints: {
+        640: { slidesPerView: 5 },
+        768: { slidesPerView: 6 }
+      }
+    });
+
+    const mainSwiper = new Swiper(".main-gallery", {
+      spaceBetween: 10,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev"
+      },
+      thumbs: {
+        swiper: thumbSwiper
+      }
+    });
+    
+  });
+
+  const lightbox = GLightbox({
+    selector: '.glightbox',
+    touchNavigation: true,
+    loop: true,
+    zoomable: true
+  });
+
+</script>
+
