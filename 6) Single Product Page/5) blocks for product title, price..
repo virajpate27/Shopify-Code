@@ -1,0 +1,49 @@
+We can absolutely create blocks in your main-product.liquid section file to make elements like product title, description, price, buy buttons, etc.
+drag-and-drop configurable via the Shopify theme editor. This gives merchants complete flexibility in arranging product page content.
+
+Step 1) sections/main-product.liquid Sample Structure
+     - add blocks in schema. i.e title, price, description...
+  
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Product Title"
+    },
+    {
+      "type": "price",
+      "name": "Product Price"
+    },
+    {
+      "type": "description",
+      "name": "Product Description"
+    },
+    {
+      "type": "form",
+      "name": "Add to Cart Form"
+    }
+  ],
+
+    - you can create preset but preset is optional.
+
+
+Step 2) for display you can user "For Loop"
+
+    {% for block in section.blocks %}
+      {% case block.type %}
+         {% when 'title' %}
+           <h1 class="text-2xl font-bold">{{ product.title }}</h1>
+
+         {% when 'price' %}
+           <p class="text-xl text-red-600">{{ product.price | money }}</p>
+
+      {% endcase %}   
+    {% endfor %}
+
+
+💡 Now You Can:
+Rearrange title, price, form, description blocks from the Shopify Editor.
+Add or remove elements based on product type or style.
+
+💡Note 
+ code in 5.1 file.
+    
