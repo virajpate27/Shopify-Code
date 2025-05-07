@@ -1,0 +1,62 @@
+<div class="max-w-2xl mx-auto">
+  <!-- Main Slider -->
+  <div class="swiper main-gallery mb-4">
+    <div class="swiper-wrapper">
+      {% for image in product.images %}
+        <div class="swiper-slide">
+          <img
+            src="{{ image | img_url: '1024x1024' }}"
+            alt="{{ product.title }}"
+            class="w-full object-cover rounded-lg"
+          >
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Navigation -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+
+  <!-- Thumbnail Slider -->
+  <div class="swiper thumb-gallery">
+    <div class="swiper-wrapper">
+      {% for image in product.images %}
+        <div class="swiper-slide">
+          <img
+            src="{{ image | img_url: '200x200' }}"
+            alt="{{ product.title }}"
+            class="w-full object-cover border rounded-md cursor-pointer"
+          >
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const thumbSwiper = new Swiper(".thumb-gallery", {
+      spaceBetween: 10,
+      slidesPerView: 4,
+      freeMode: true,
+      watchSlidesProgress: true,
+      breakpoints: {
+        640: { slidesPerView: 5 },
+        768: { slidesPerView: 6 }
+      }
+    });
+
+    const mainSwiper = new Swiper(".main-gallery", {
+      spaceBetween: 10,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev"
+      },
+      thumbs: {
+        swiper: thumbSwiper
+      }
+    });
+  });
+</script>
