@@ -1,0 +1,71 @@
+-> Multiple variants properly (e.g., Color + Size), We need:
+   1) Separate dropdowns for each option (Color, Size).
+   2) A script that finds the matching variant based on all selected options.
+   3) Switch the image based on the matched variant.
+
+Step 1) open main-product.liquid add code for variation.
+
+    {% if product.has_only_default_variant == false %}
+         {% assign option_names  = product.options_with_values %}
+         {% for option in option_names %}
+         <label>{{ option.name }}</label>
+         <select class="variant-option border mb-4 p-2 w-full" data-option-index="{{ forloop.index0 }}">
+            {% for value in option.values %}
+            <option value="{{ value }}">{{ value }}</option>
+            {% endfor %}
+         </select>
+         {% endfor %}
+      
+    {% endif %}
+
+    <input type="hidden" id="SelectedVariantId" name="id" value="{{ product.variants.first.id }}">
+
+
+
+
+ Step 2: Add JavaScript to Match Variants
+
+ <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const variantOptions = document.querySelectorAll(".variant-option");
+    const variants = {{ product.variants | json }};
+    const mainImage = document.getElementById("MainProductImage");
+    const variantIdInput = document.getElementById("SelectedVariantId");
+
+    function findVariant() {
+      const selectedOptions = Array.from(variantOptions).map(select => select.value);
+
+      const matchedVariant = variants.find(variant =>
+        selectedOptions.every((opt, idx) => variant.options[idx] === opt)
+      );
+
+      if (matchedVariant) {
+        // Set hidden input for form submission
+        variantIdInput.value = matchedVariant.id;
+
+        // Update image
+        if (matchedVariant.featured_image) {
+          mainImage.src = matchedVariant.featured_image.src;
+        }
+      }
+    }
+
+    variantOptions.forEach(select => {
+      select.addEventListener("change", findVariant);
+    });
+
+    findVariant(); // initialize on page load
+  });
+</script>
+
+
+
+Step 3: Image HTML
+
+<img 
+  id="MainProductImage"
+  src="{{ product.featured_image | img_url: 'master' }}" 
+  alt="{{ product.title }}"
+  class="w-full rounded"
+/>
+
