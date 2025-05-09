@@ -1,0 +1,45 @@
+Step 1) Basic Add to Cart Form (with variant selection)
+
+- Open "main-product.liquid"
+
+<form method="post" action="/cart/add" id="AddToCartForm">
+  <input type="hidden" name="id" id="SelectedVariantId" value="{{ product.variants.first.id }}">
+  <button type="submit" class="add-to-cart-button">
+    Add to cart
+  </button>
+</form>
+
+
+Step 2) Optional: Show "Sold Out" if Variant is Unavailable
+
+const addToCartButton = document.querySelector('.add-to-cart-button');
+
+function findVariant() {
+  const selectedOptions = Array.from(variantOptions).map(select => select.value);
+
+  const matchedVariant = variants.find(variant =>
+    selectedOptions.every((opt, idx) => variant.options[idx] === opt)
+  );
+
+  if (matchedVariant) {
+    variantIdInput.value = matchedVariant.id;
+
+    // Switch image
+    if (matchedVariant.featured_image) {
+      mainImage.src = matchedVariant.featured_image.src;
+    }
+
+    // Handle availability
+    if (matchedVariant.available) {
+      addToCartButton.disabled = false;
+      addToCartButton.textContent = "Add to cart";
+    } else {
+      addToCartButton.disabled = true;
+      addToCartButton.textContent = "Sold out";
+    }
+  }
+}
+
+
+NOte : Main Code added in 6.1 file.
+
