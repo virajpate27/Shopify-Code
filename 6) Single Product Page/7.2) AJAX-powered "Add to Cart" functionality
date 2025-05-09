@@ -1,0 +1,68 @@
+Step 1) Modify the Form
+
+<form id="AddToCartForm" data-product-id="{{ product.id }}">
+  <input type="hidden" name="id" id="SelectedVariantId" value="{{ product.variants.first.id }}">
+  
+  <div class="quantity-wrapper">
+    <button type="button" class="quantity-btn minus">−</button>
+    <input type="number" name="quantity" id="Quantity" min="1" value="1" />
+    <button type="button" class="quantity-btn plus">+</button>
+  </div>
+
+  <button type="submit" class="add-to-cart-button">Add to cart</button>
+</form>
+<div id="AddToCartMessage" style="display:none; margin-top: 10px;"></div>
+
+
+Step 2)  2. JavaScript for AJAX Add to Cart
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('AddToCartForm');
+    const minusBtn = document.querySelector('.quantity-btn.minus');
+    const messageBox = document.getElementById('AddToCartMessage');
+
+  
+
+    // AJAX Add to Cart
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const formData = {
+        id: document.getElementById('SelectedVariantId').value,
+        quantity: qtyInput.value
+      };
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(res => res.json())
+      .then(data => {
+        messageBox.style.display = 'block';
+        messageBox.innerText = `"${data.title}" added to cart!`;
+        updateCartCount();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+
+    // Update Cart Count
+    function updateCartCount() {
+      fetch('/cart.js')
+        .then(res => res.json())
+        .then(cart => {
+          const cartCountEl = document.querySelector('.cart-count'); // adjust selector
+          if (cartCountEl) {
+            cartCountEl.textContent = cart.item_count;
+          }
+        });
+    }
+  });
+</script>
+
+Note : Main Code in 6.1 file
