@@ -1,0 +1,37 @@
+quantity selector by adding “+” and “−” buttons to let users easily increase or decrease the quantity.
+
+Step 1) main-product.liquid
+<div class="quantity-wrapper">
+  <button type="button" class="quantity-btn minus">−</button>
+  <input type="number" name="quantity" id="Quantity" min="1" value="1" />
+  <button type="button" class="quantity-btn plus">+</button>
+</div>
+
+<form method="post" action="/cart/add" id="AddToCartForm">
+  <input type="hidden" name="id" id="SelectedVariantId" value="{{ product.variants.first.id }}">
+  <button type="submit" class="add-to-cart-button">Add to cart</button>
+</form>
+
+
+Step 2) JavaScript: Logic for + / − Buttons
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const minusBtn = document.querySelector('.quantity-btn.minus');
+    const plusBtn = document.querySelector('.quantity-btn.plus');
+    const qtyInput = document.getElementById('Quantity');
+
+    minusBtn.addEventListener('click', function () {
+      let qty = parseInt(qtyInput.value);
+      if (qty > 1) qtyInput.value = qty - 1;
+    });
+
+    plusBtn.addEventListener('click', function () {
+      let qty = parseInt(qtyInput.value);
+      qtyInput.value = qty + 1;
+    });
+  });
+</script>
+
+
+Note : Main Code in 6.1 file
