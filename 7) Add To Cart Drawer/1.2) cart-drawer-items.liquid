@@ -1,0 +1,31 @@
+<div id="CartItems" class="space-y-4">
+  {% if cart.item_count > 0 %}
+    {% for item in cart.items %}
+      <div class="flex items-start gap-4 border-b pb-4">
+        <img src="{{ item.image | image_url: width: 100 }}" alt="{{ item.product.title }}" class="w-20 h-20 object-cover rounded-md" />
+
+        <div class="flex-1">
+          <div class="flex justify-between">
+            <h4 class="font-semibold text-sm">{{ item.product.title }}</h4>
+            <button class="remove-item text-sm text-red-500" data-line="{{ forloop.index }}">🗑️</button>
+          </div>
+
+          {% if item.variant.title != 'Default Title' %}
+            <p class="text-xs text-gray-500 mt-1">{{ item.variant.title }}</p>
+          {% endif %}
+
+          <div class="flex items-center mt-2 gap-2">
+            <button class="qty-decrease text-sm border px-2" data-line="{{ forloop.index }}">−</button>
+            <span class="text-sm">{{ item.quantity }}</span>
+            <button class="qty-increase text-sm border px-2" data-line="{{ forloop.index }}">+</button>
+          </div>
+
+          <p class="text-sm font-medium mt-2">{{ item.line_price | money }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-center text-sm text-gray-600">Your cart is currently empty!</p>
+    <a href="/collections/all" class="mt-4 inline-block text-center px-4 py-2 bg-black text-white rounded-md">Continue Shopping</a>
+  {% endif %}
+</div>
