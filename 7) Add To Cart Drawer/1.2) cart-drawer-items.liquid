@@ -29,3 +29,59 @@
     <a href="/collections/all" class="mt-4 inline-block text-center px-4 py-2 bg-black text-white rounded-md">Continue Shopping</a>
   {% endif %}
 </div>
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  const cartContainer = document.getElementById('CartItems');
+
+  // Delegate clicks for + / − and remove
+  cartContainer.addEventListener('click', async (e) => {
+    if (e.target.classList.contains('qty-increase') || e.target.classList.contains('qty-decrease')) {
+      const line = e.target.dataset.line;
+      const currentQty = parseInt(e.target.closest('.flex').querySelector('span').textContent);
+      const newQty = e.target.classList.contains('qty-increase') ? currentQty + 1 : Math.max(1, currentQty - 1);
+      await updateCart(line, newQty);
+    }
+
+    if (e.target.classList.contains('remove-item')) {
+      const line = e.target.dataset.line;
+      await updateCart(line, 0); // 0 means remove
+    }
+  });
+
+  async function updateCart(line, quantity) {
+    await fetch('/cart/change.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ line: parseInt(line), quantity: quantity })
+    });
+
+    refreshCartItems();
+    updateCartIcon();
+  }
+
+  async function refreshCartItems() {
+    const response = await fetch('/cart?view=drawer');
+    const html = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const newItems = doc.querySelector('#CartItems');
+    if (newItems) cartContainer.innerHTML = newItems.innerHTML;
+  }
+
+  async function updateCartIcon() {
+    const response = await fetch('/cart.js');
+    const data = await response.json();
+    const badge = document.querySelector('.cart-badge');
+    if (badge) {
+      badge.textContent = data.item_count > 0 ? data.item_count : '';
+    }
+  }
+});
+
+
+</script>
