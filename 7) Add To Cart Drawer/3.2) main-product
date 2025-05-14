@@ -1,0 +1,538 @@
+    <div class="container max-w-2xl mx-auto py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+   <div>
+      <!-- Main Slider -->
+      <div class="swiper main-gallery mb-4">
+         <div class="swiper-wrapper">
+            {% for image in product.images %}
+            <div class="swiper-slide">
+               <a href="{{ image | img_url: 'master' }}" class="glightbox" data-gallery="product-gallery">
+               <img id="MainProductImage" src="{{ image | img_url: '1024x1024' }}" alt="{{ product.title }}" id="MainProductImage" class="w-full object-cover rounded-lg">
+               </a>
+            </div>
+            {% endfor %}
+         </div>
+         <!-- Navigation -->
+         <div class="swiper-button-next"></div>
+         <div class="swiper-button-prev"></div>
+      </div>
+      <!-- Thumbnail Slider -->
+      <div class="swiper thumb-gallery">
+         <div class="swiper-wrapper">
+            {% for image in product.images %}
+            <div class="swiper-slide">
+               <img src="{{ image | img_url: '200x200' }}" alt="{{ product.title }}" class="w-full object-cover border rounded-md cursor-pointer">
+            </div>
+            {% endfor %}
+         </div>
+      </div>
+   </div>
+   <div>
+      {% for block in section.blocks %}
+      {% case block.type %}
+      {% when 'title' %}
+      <h1 class="text-2xl font-bold">{{ product.title }}</h1>
+      {% when 'price' %}
+      <p class="text-xl text-red-600">{{ product.price | money }}</p>
+      {% when 'description' %}
+      <div class="prose">{{ product.description }}</div>
+      {% when 'badge' %}
+      <span class="inline-block px-2 py-1 text-xs font-bold text-white bg-green-500 rounded mb-3">
+      {{ block.settings.badge_text }}
+      </span>
+      {% when 'reviews' %}
+      <div class="mb-4">
+         ⭐⭐⭐⭐⭐
+         <p class="text-sm text-gray-600">Based on 150 reviews</p>
+      </div>
+      {% when 'tabs' %}
+      <div class="tabs mb-6">
+         <button class="tab-button active">Description</button>
+         <button class="tab-button">Shipping</button>
+         <div class="tab-content">
+            <div class="tab-pane active">{{ product.description }}</div>
+            <div class="tab-pane hidden">Ships in 2–5 days. Free returns within 15 days.</div>
+         </div>
+      </div>
+      {% when 'trust' %}
+      <div class="flex items-center space-x-4 mt-4">
+         <img src="{{ block.settings.icon1 | image_url }}" class="h-8" alt="Trust Icon 1">
+         <img src="{{ block.settings.icon2 | image_url }}" class="h-8" alt="Trust Icon 2">
+         <img src="{{ block.settings.icon3 | image_url }}" class="h-8" alt="Trust Icon 3">
+      </div>
+      {% when 'custom_liquid' %}
+      {{ block.settings.custom_liquid}}
+        
+      {% when 'variant_picker' %}
+      {% if product.has_only_default_variant == false %}
+         {% assign option_names  = product.options_with_values %}
+         {% for option in option_names %}
+         <label>{{ option.name }}</label>
+         <select class="variant-option border mb-4 p-2 w-full" data-option-index="{{ forloop.index0 }}">
+            {% for value in option.values %}
+            <option value="{{ value }}">{{ value }}</option>
+            {% endfor %}
+         </select>
+         {% endfor %}
+      
+      {% endif %}
+
+        {% when 'form' %}
+         <form  id="AddToCartForm" data-product-id="{{ product.id }}">
+         <!-- Hidden variant ID -->
+         <input type="hidden" id="SelectedVariantId" name="id" value="{{ product.variants.first.id }}">
+         
+        <!-- Quantity input -->
+        <div class="quantity-wrapper ">
+         <button type="button" class="quantity-btn minus">−</button>
+         <input type="number" name="quantity" id="Quantity" min="1" value="1" />
+         <button type="button" class="quantity-btn plus">+</button>
+       </div>
+        
+         <!-- Add to cart button -->
+         <button type="submit" class="add-to-cart-button" >
+         Add to cart
+         </button>
+       </form>
+       
+          
+      {% endcase %}
+      {% endfor %}
+   </div>
+</div>
+{% schema %}
+{
+"name": "Main Product",
+"tag": "section",
+"class": "product-main",
+"settings": [],
+"blocks": [
+{
+"type": "@app"
+},
+{
+"type": "title",
+"name": "Product Title"
+},
+{
+"type": "price",
+"name": "Product Price"
+},
+{
+"type": "description",
+"name": "Product Description"
+},
+{
+"type": "form",
+"name": "Add to Cart Form"
+},
+{
+"type": "badge",
+"name" : "Product Badge",
+"settings": [
+{
+"type": "text",
+"id": "badge_text",
+"label": "Badge Text",
+"default": "Best Seller"
+}
+]
+},
+{
+"type": "reviews",
+"name": "Star Reviews"
+},
+{
+"type": "tabs",
+"name": "Tabs"
+},
+{
+"type": "trust",
+"name": "Trust Icons",
+"settings": [
+{
+"type": "image_picker",
+"id": "icon1",
+"label": "Icon 1"
+},
+{
+"type": "image_picker",
+"id": "icon2",
+"label": "Icon 2"
+},
+{
+"type": "image_picker",
+"id": "icon3",
+"label": "Icon 3"
+}
+]
+},
+{
+"type": "custom_liquid",
+"name" : "Custom liquid",
+"settings": [
+{
+"type": "liquid",
+"id": "custom_liquid",
+"label": "Custom liquid",
+"info": "Add app snippets or other Liquid code to create advanced customizations."
+}
+]
+},
+{
+"type": "variant_picker",
+"name": "Variant Picker"
+},
+{
+"type": "quantity_selector",
+"name": "Quantity Selector"
+}
+],
+"max_blocks": 15,
+}
+{% endschema %}
+<style>
+   .swiper-slide-thumb-active img {
+   border: 2px solid #2563eb; /* Tailwind's blue-600 */
+   border-radius: 0.5rem;
+   }
+   .tabs .tab-button {
+   padding: 8px 16px;
+   border: none;
+   cursor: pointer;
+   }
+   .tabs .tab-pane {
+   margin-top: 10px;
+   }
+   .tab-pane.hidden {
+   display: none;
+   }
+   .tab-button.active {
+   font-weight: bold;
+   border-bottom: 2px solid black;
+   }
+   .add-to-cart-button {
+   padding: 12px 24px;
+   background-color: #111;
+   color: white;
+   border: none;
+   border-radius: 6px;
+   font-weight: bold;
+   cursor: pointer;
+   }
+   .add-to-cart-button:disabled {
+   background-color: #ccc;
+   cursor: not-allowed;
+   }
+  
+  .quantity-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quantity-btn {
+  padding: 8px 12px;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+  
+   #Quantity {
+   width: 60px;
+   padding: 8px;
+   margin-right: 12px;
+   border: 1px solid #ccc;
+   border-radius: 4px;
+   }
+
+  .cart-item {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+   // variation code
+     const variantOptions = document.querySelectorAll(".variant-option");
+     const variants = {{ product.variants | json }};
+     const mainImage = document.getElementById("MainProductImage");
+     const variantIdInput = document.getElementById("SelectedVariantId");
+     const addToCartButton = document.querySelector('.add-to-cart-button');
+
+   // Quantity Selector with Buttons start
+       const minusBtn = document.querySelector('.quantity-btn.minus');
+       const plusBtn = document.querySelector('.quantity-btn.plus');
+       const qtyInput = document.getElementById('Quantity');
+
+  //Show Drawer start 
+       const cartDrawer = document.getElementById('cart-drawer');
+       const cartOverlay = document.getElementById('cart-overlay');
+       const closeCartBtn = document.getElementById('close-cart');
+      const cartoldDrwwer = document.getElementById('drawer-right-example');
+
+  //AJAX Add to Cart start 
+      const form = document.getElementById('AddToCartForm');
+      const messageBox = document.getElementById('AddToCartMessage');
+
+  // slider code start
+     const thumbSwiper = new Swiper(".thumb-gallery", {
+       spaceBetween: 10,
+       slidesPerView: 4,
+       freeMode: true,
+       watchSlidesProgress: true,
+       breakpoints: {
+         640: { slidesPerView: 5 },
+         768: { slidesPerView: 6 }
+       }
+     });
+
+   const mainSwiper = new Swiper(".main-gallery", {
+       spaceBetween: 10,
+       navigation: {
+         nextEl: ".swiper-button-next",
+         prevEl: ".swiper-button-prev"
+       },
+       thumbs: {
+         swiper: thumbSwiper
+       }
+     });
+ // slider code End
+
+
+  // variation code start 
+     function findVariant() {
+       
+       const selectedOptions = Array.from(variantOptions).map(select => select.value);
+   
+       const matchedVariant = variants.find(variant =>
+         selectedOptions.every((opt, idx) => variant.options[idx] === opt)
+       );
+   
+       if (matchedVariant) {
+         // Set hidden input for form submission
+         variantIdInput.value = matchedVariant.id;
+   
+         // Update image
+         if (matchedVariant.featured_image) {
+           mainImage.src = matchedVariant.featured_image.src;
+         }
+   
+          // Handle availability
+     if (matchedVariant.available) {
+       addToCartButton.disabled = false;
+       addToCartButton.textContent = "Add to cart";
+     } else {
+       addToCartButton.disabled = true;
+       addToCartButton.textContent = "Sold out";
+     }
+   
+         
+       }
+     }
+
+   variantOptions.forEach(select => {
+       select.addEventListener("change", findVariant);
+     });
+   
+     findVariant();
+     
+   
+  // variation code end
+
+
+// Quantity Selector with Buttons start
+
+ minusBtn.addEventListener('click', function () {
+         let qty = parseInt(qtyInput.value);
+         
+         if (qty > 1){
+          qtyInput.value = qty - 1;
+         }
+       });
+
+      plusBtn.addEventListener('click', function () {
+        let qty = parseInt(qtyInput.value);
+        qtyInput.value = qty + 1;
+      });
+
+ // Quantity Selector with Buttons end
+
+
+//AJAX Add to Cart start 
+      form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const formData = {
+        id: document.getElementById('SelectedVariantId').value,
+        quantity: qtyInput.value
+      };
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(res => res.json())
+      .then(() => {
+        updateCartCount();
+        openCartDrawer();
+        loadCartDrawer();
+      })
+      .catch(console.error);
+    });
+
+       // Update Cart Count
+    function updateCartCount() {
+      fetch('/cart.js')
+        .then(res => res.json())
+        .then(cart => {
+          const cartCountEl = document.querySelector('.cart-count'); // adjust selector
+          if (cartCountEl) {
+            cartCountEl.textContent = cart.item_count;
+          }
+        });
+    }
+
+   
+
+   
+    function openCartDrawer() {
+      cartDrawer.classList.add('open');
+      cartOverlay.classList.remove('hidden');
+      
+    }
+
+     function closeCartDrawer() {
+      cartDrawer.classList.remove('open');
+      cartOverlay.classList.add('hidden');
+    }
+
+    function loadCartDrawer() {
+      fetch('/cart?view=drawer')
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const items = doc.querySelector('#CartItems');
+          document.getElementById('cart-items').innerHTML = items ? items.innerHTML : '<p>Cart is empty.</p>';
+        });
+    }
+
+
+  closeCartBtn.addEventListener('click', closeCartDrawer);
+  cartOverlay.addEventListener('click', closeCartDrawer);
+
+
+    // RemoveItem start
+     confirmRemoveItem = (itemKey, button) => {
+  if (confirm('Are you sure you want to remove this item from your cart?')) {
+    animateRemove(button, () => {
+      removeCartItem(itemKey);
+    });
+  }
+};
+
+
+  const animateRemove = (button, callback) => {
+  const cartItem = button.closest('.cart-item'); // Make sure your item has class "cart-item"
+  if (cartItem) {
+    cartItem.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+    cartItem.style.opacity = '0';
+    cartItem.style.transform = 'translateX(20px)';
+
+    setTimeout(() => {
+      callback();
+    }, 300); // Wait for animation to finish
+  } else {
+    callback();
+  }
+};
+
+    
+    
+  //removeCartItem
+  removeCartItem = (itemKey) => {
+  const button = event.target;
+  button.disabled = true;
+
+  fetch('/cart/change.js', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      id: itemKey,
+      quantity: 0
+    })
+  })
+  .then(response => {
+    if (!response.ok) throw new Error('Failed to remove item.');
+    return response.json();
+  })
+  .then(data => {
+    loadCartDrawer();
+    updateCartCount();
+  })
+  .catch(error => {
+    console.error(error);
+    alert('Could not remove item.');
+  })
+  .finally(() => {
+    button.disabled = false;
+  });
+};
+
+ // RemoveItem end
+
+
+    // Update Quantity
+
+ updateQuantity = (itemKey, change) => {
+  const safeKey = itemKey.replace(/[:\/]/g, '-');
+  const input = document.getElementById(`quantity-${safeKey}`);
+  let currentQty = parseInt(input.value);
+
+  const newQty = currentQty + change;
+  if (newQty < 1) return;
+
+  fetch('/cart/change.js', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      id: itemKey,
+      quantity: newQty
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    loadCartDrawer(); // Re-render the cart drawer
+    updateCartCount(); // Update cart count if needed
+  });
+};
+
+   
+    
+  //AJAX Add to Cart end 
+
+
+   });
+
+                          
+// lightbox code
+   
+   const lightbox = GLightbox({
+     selector: '.glightbox',
+     touchNavigation: true,
+     loop: true,
+     zoomable: true
+   });
+</script>
