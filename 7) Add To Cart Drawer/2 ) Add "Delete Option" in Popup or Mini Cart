@@ -1,0 +1,72 @@
+Step 1) Add Remove Icon in "Snipets/cart-drawer-items"
+
+<!-- Remove Icon -->
+<button 
+  class="absolute top-0 right-0 p-2 text-gray-500 hover:text-red-600 transition"
+  onclick="confirmRemoveItem('{{ item.key }}', this)"
+>
+  Remove
+</button>
+
+
+Step 2: Add confirmRemoveItem function in (section/main-product)
+
+ confirmRemoveItem = (itemKey, button) => {
+  if (confirm('Are you sure you want to remove this item from your cart?')) {
+    animateRemove(button, () => {
+      removeCartItem(itemKey);
+    });
+  }
+};
+
+Step 3: Add Animation Function (fade out) (section/main-product)
+const animateRemove = (button, callback) => {
+  const cartItem = button.closest('.cart-item'); // Make sure your item has class "cart-item"
+  if (cartItem) {
+    cartItem.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+    cartItem.style.opacity = '0';
+    cartItem.style.transform = 'translateX(20px)';
+
+    setTimeout(() => {
+      callback();
+    }, 300); // Wait for animation to finish
+  } else {
+    callback();
+  }
+};
+
+
+Step 4: Optional CSS for smoother animation:
+
+.cart-item {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+Step 5) Update your removeCartItem() function: (section/main-product)
+
+const removeCartItem = (itemKey) => {
+  fetch('/cart/change.js', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      id: itemKey,
+      quantity: 0
+    })
+  })
+  .then(response => {
+    if (!response.ok) throw new Error('Failed to remove item.');
+    return response.json();
+  })
+  .then(data => {
+    // Refresh cart drawer and count
+    loadCartDrawer();
+    updateCartCount();
+  })
+  .catch(error => {
+    console.error('Remove error:', error);
+    alert('Failed to remove item from cart.');
+  });
+};
+
