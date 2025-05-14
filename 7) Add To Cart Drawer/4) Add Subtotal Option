@@ -1,0 +1,57 @@
+- To display the "Subtotal" in your cart drawer or cart page, you can use Shopify's cart.total_price
+
+Step 1: Add Subtotal HTML Section
+<div class="flex justify-between items-center mt-4 border-t pt-4 text-lg font-semibold">
+  <span>Subtotal</span>
+ <span class="cart-subtotal">{{ cart.total_price | money }}</span>
+</div>
+
+
+Step 2: When Using AJAX to Update Cart 
+
+.then(data => {
+  loadCartDrawer(); // If this re-renders entire cart, it may already update subtotal
+  updateCartCount(data);
+  updateSubtotal(data); // Add this in "removeCartItem" and "updateQuantity" function
+});
+
+
+const updateSubtotal = (cartData) => {
+  const subtotalElement = document.querySelector('.cart-subtotal');
+  if (subtotalElement) {
+    subtotalElement.textContent = formatMoney(cartData.total_price);
+  }
+};
+
+// Shopify Money Format Helper
+function formatMoney(cents) {
+  return (cents / 100).toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'INR' // Change if needed
+  });
+}
+
+
+Note : Change Below Code also, this is add to cart button click code 
+
+fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(res => res.json())
+      .then(() => {
+        updateCartCount();
+        openCartDrawer();
+        loadCartDrawer();
+        return fetch('/cart.js');
+      })
+        .then(res => res.json())
+        .then(cartData => {
+          updateSubtotal(cartData);
+        })
+      .catch(console.error);
+    });
