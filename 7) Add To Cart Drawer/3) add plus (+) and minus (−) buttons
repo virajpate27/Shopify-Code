@@ -1,0 +1,47 @@
+- To add plus (+) and minus (−) buttons for adjusting quantity in your cart
+
+Step 1) Add Code in "cart-drawer-items"
+<div class="flex items-center gap-2">
+  <button onclick="updateQuantity('{{ item.key }}', -1)" class="px-2 py-1 border rounded">−</button>
+
+  <input 
+    type="text" 
+    value="{{ item.quantity }}" 
+    readonly 
+    id="quantity-{{ item.key | replace: ':', '-' | replace: '/', '-' }}" 
+    class="w-10 text-center border rounded"
+  />
+
+  <button onclick="updateQuantity('{{ item.key }}', 1)" class="px-2 py-1 border rounded">+</button>
+</div>
+
+
+Step 2) Add JavaScript Logic
+
+const updateQuantity = (itemKey, change) => {
+  const safeKey = itemKey.replace(/[:\/]/g, '-');
+  const input = document.getElementById(`quantity-${safeKey}`);
+  let currentQty = parseInt(input.value);
+
+  const newQty = currentQty + change;
+  if (newQty < 1) return;
+
+  fetch('/cart/change.js', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      id: itemKey,
+      quantity: newQty
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    loadCartDrawer(); // Re-render the cart drawer
+    updateCartCount(); // Update cart count if needed
+  });
+};
+
+
+
