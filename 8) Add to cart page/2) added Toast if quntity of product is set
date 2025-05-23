@@ -1,0 +1,208 @@
+<section class="cart-page container mx-auto px-4 py-6">
+  <h1 class="text-3xl font-semibold mb-6">Your Cart</h1>
+
+  <div id="CartContainer">
+    {% if cart.item_count == 0 %}
+      <p class="text-lg">Your cart is currently empty.</p>
+      <a href="/" class="mt-4 inline-block bg-black text-white px-4 py-2 rounded">Continue Shopping</a>
+    {% else %}
+      <div id="CartItems" class="flex flex-col gap-6">
+        {% for item in cart.items %}
+          <div class="flex flex-col sm:flex-row justify-between items-center border-b pb-4" data-key="{{ item.key }}">
+            <div class="flex items-center gap-4 w-full sm:w-auto">
+              <img src="{{ item.image | image_url: width: 100 }}" alt="{{ item.title }}" class="w-20 h-20 object-cover" />
+              <div>
+                <h2 class="font-medium">{{ item.product.title }}</h2>
+                {% unless item.variant.title == 'Default Title' %}
+                  <p class="text-sm text-gray-500">{{ item.variant.title }}</p>
+                {% endunless %}
+                <p class="text-sm text-gray-800">{{ item.price | money }}</p>
+                <span>Total</span>
+                <p class="text-sm text-gray-800 item-total">{{ item.final_line_price | money }}</p>
+              </div>
+            </div>
+
+            <div class="cart-item" data-key="{{ item.key }}">
+              <div class="flex items-center space-x-2">
+                <button class="qty-btn bg-gray-200 px-2" data-action="decrease" data-key="{{ item.key }}">−</button>
+                <input type="number" class="w-12 text-center qty-input" value="{{ item.quantity }}" min="1" max="{{ item.variant.inventory_quantity }}" data-max-qty="{{ item.variant.inventory_quantity }}">
+                <button class="qty-btn bg-gray-200 px-2" data-action="increase" data-key="{{ item.key }}">+</button>
+                <button class="text-red-600 ml-4 text-sm underline" data-action="remove" data-key="{{ item.key }}">Remove</button>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="mt-6 flex justify-between items-center">
+        <h3 class="text-xl font-bold">Subtotal:</h3>
+        <p id="CartSubtotal" class="text-xl font-semibold">{{ cart.total_price | money }}</p>
+      </div>
+
+      <div class="mt-6">
+        <a href="/checkout" class="bg-green-600 text-white px-6 py-3 rounded">Proceed to Checkout</a>
+      </div>
+    {% endif %}
+  </div>
+
+  <div id="toast" class="fixed bottom-6 right-6 bg-red-600 text-white px-4 py-2 rounded shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50">
+  Quantity limit reached!
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const cartSubtotal = document.querySelector('#CartSubtotal');
+
+  function formatMoney(cents) {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: '{{ shop.currency }}'
+    }).format(cents / 100);
+  }
+
+  function updateCartItem(itemKey, quantity) {
+    fetch('/cart/change.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: itemKey,
+        quantity: quantity
+      })
+    })
+    .then(() => fetch('/cart.js'))
+    .then(res => res.json())
+    .then(data => {
+      renderCart(data);
+      updateCartCount(data.item_count);
+    })
+    .catch(console.error);
+  }
+
+  function updateCartCount(count) {
+    const cartCountEl = document.querySelector('.cart-count');
+    if (cartCountEl) {
+      cartCountEl.textContent = count;
+    }
+  }
+
+  function renderCart(cart) {
+    const cartContainer = document.querySelector('#CartContainer');
+    const cartItemsContainer = document.querySelector('#CartItems');
+
+    if (!cart || !cartItemsContainer) return;
+
+    if (cart.item_count === 0) {
+      cartContainer.innerHTML = `
+        <p class="text-lg">Your cart is currently empty.</p>
+        <a href="/" class="mt-4 inline-block bg-black text-white px-4 py-2 rounded">Continue Shopping</a>
+      `;
+      return;
+    }
+
+    cartSubtotal.textContent = formatMoney(cart.total_price);
+    cartItemsContainer.innerHTML = '';
+
+    cart.items.forEach(item => {
+      const itemHTML = `
+        <div class="flex flex-col sm:flex-row justify-between items-center border-b pb-4" data-key="${item.key}">
+          <div class="flex items-center gap-4 w-full sm:w-auto">
+            <img src="${item.image}" alt="${item.title}" class="w-20 h-20 object-cover" />
+            <div>
+              <h2 class="font-medium">${item.product_title}</h2>
+              ${item.variant_title !== 'Default Title' ? `<p class="text-sm text-gray-500">${item.variant_title}</p>` : ''}
+              <p class="text-sm text-gray-800">${formatMoney(item.price)}</p>
+              <span>Total</span>
+              <p class="text-sm text-gray-800 item-total">${formatMoney(item.final_line_price)}</p>
+            </div>
+          </div>
+
+          <div class="cart-item" data-key="${item.key}">
+            <div class="flex items-center space-x-2">
+              <button class="qty-btn bg-gray-200 px-2" data-action="decrease" data-key="${item.key}">−</button>
+              <input type="number" class="w-12 text-center qty-input" value="${item.quantity}" min="1">
+              <button class="qty-btn bg-gray-200 px-2" data-action="increase" data-key="${item.key}">+</button>
+              <button class="text-red-600 ml-4 text-sm underline" data-action="remove" data-key="${item.key}">Remove</button>
+            </div>
+          </div>
+        </div>
+      `;
+      cartItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
+    });
+
+    attachEventListeners();
+  }
+
+  function attachEventListeners() {
+    document.querySelectorAll('.qty-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const button = e.currentTarget;
+        const action = button.dataset.action;
+        const itemKey = button.dataset.key;
+        const input = button.parentElement.querySelector('.qty-input');
+        let quantity = parseInt(input.value);
+        const maxQty = parseInt(input.dataset.maxQty || 10);
+        
+       if (action === 'increase') {
+  if (quantity < maxQty) {
+    quantity += 1;
+  } else {
+    showToast(`Maximum quantity of ${maxQty} reached for this item.`);
+    return;
+  }
+}
+
+        
+        if (action === 'decrease' && quantity > 1) quantity -= 1;
+
+        input.value = quantity;
+        updateCartItem(itemKey, quantity);
+      });
+    });
+
+    document.querySelectorAll('[data-action="remove"]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const key = e.target.dataset.key;
+        updateCartItem(key, 0);
+      });
+    });
+  }
+
+  attachEventListeners();
+
+  document.querySelectorAll('.qty-input').forEach(input => {
+  input.addEventListener('change', e => {
+    const max = parseInt(input.dataset.maxQty || 10);
+    let qty = parseInt(input.value);
+    if (qty < 1) qty = 1;
+    
+    if (qty > max) {
+  qty = max;
+  showToast(`You can only add up to ${max} of this product.`);
+}
+    
+    input.value = qty;
+    const key = input.closest('.cart-item').dataset.key;
+    updateCartItem(key, qty);
+  });
+});
+
+  function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.remove('opacity-0');
+  toast.classList.add('opacity-100');
+
+  setTimeout(() => {
+    toast.classList.remove('opacity-100');
+    toast.classList.add('opacity-0');
+  }, 3000);
+}
+
+  
+});
+
+  
+</script>
