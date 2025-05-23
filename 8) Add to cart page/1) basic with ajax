@@ -1,0 +1,21 @@
+- Create a Cart Page in Shopify using JSON templates
+
+✅ Step 1: Create Cart Template (JSON)
+File: templates/cart.json
+1) Go to your Shopify Admin > Online Store > Themes > Edit Code.
+2) Under Templates, click "Add a new template" → choose cart → type: JSON.
+
+{
+  "sections": {
+    "main-cart": {
+      "type": "main-cart"
+    }
+  },
+  "order": ["main-cart"]
+}
+
+
+✅ Step 2: Create Section
+File: sections/main-cart.liquid
+
+Note: Code in 1.2 file.
