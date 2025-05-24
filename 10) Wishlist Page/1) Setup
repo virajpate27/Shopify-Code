@@ -1,0 +1,218 @@
+✅ Local Storage for guests (non-logged-in visitors)
+✅ Metafields for logged-in customers (to persist across devices)
+
+🧠 What You Want:
+Guests can add/remove wishlist items and view them anytime (stored in browser).
+
+When guests log in, their local wishlist syncs to their customer metafield.
+
+When logged-in customers visit any device/browser, their wishlist is retrieved from metafields.
+
+
+✅ 1. Enable a Customer Metafield for Wishlist
+Go to your Shopify Admin:
+  1. Settings > Custom Data > Customers
+  2. Click “Add definition”
+     - Name: Wishlist
+     - Namespace and key: wishlist.handles
+     - Type: List of single line text
+     - Select Storefronts and Admin API
+
+✅ 2. Add Wishlist Buttons to Product Cards
+   In product grid or product template:
+   <button 
+   class="wishlist-btn"
+   data-handle="{{ product.handle }}"
+  >
+  ❤️ Add to Wishlist
+</button>
+
+✅ 3. JavaScript: Store Wishlist Locally & Sync When Logged In
+<script>
+  // Store wishlist in localStorage
+  function getLocalWishlist() {
+    return JSON.parse(localStorage.getItem('wishlist') || '[]');
+  }
+
+  function saveLocalWishlist(wishlist) {
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  }
+
+  function addToWishlist(handle) {
+    let wishlist = getLocalWishlist();
+    if (!wishlist.includes(handle)) {
+      wishlist.push(handle);
+      saveLocalWishlist(wishlist);
+    }
+  }
+
+  function removeFromWishlist(handle) {
+    let wishlist = getLocalWishlist();
+    wishlist = wishlist.filter(h => h !== handle);
+    saveLocalWishlist(wishlist);
+  }
+
+  function toggleWishlist(handle) {
+    let wishlist = getLocalWishlist();
+    if (wishlist.includes(handle)) {
+      removeFromWishlist(handle);
+      alert('Removed from wishlist');
+    } else {
+      addToWishlist(handle);
+      alert('Added to wishlist');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.wishlist-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const handle = btn.dataset.handle;
+        toggleWishlist(handle);
+      });
+    });
+
+    // ✅ If logged in, sync localStorage → metafield
+    {% if customer %}
+      const metafieldHandles = "{{ customer.metafields.wishlist.handles | join: ',' }}".split(',');
+      const localWishlist = getLocalWishlist();
+      const combined = Array.from(new Set([...metafieldHandles, ...localWishlist])).filter(Boolean);
+
+      fetch('/account/metafields', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          metafield: {
+            namespace: "wishlist",
+            key: "handles",
+            value: combined.join(','),
+            type: "list.single_line_text_field"
+          }
+        })
+      }).then(() => {
+        localStorage.removeItem('wishlist'); // clear local after sync
+        console.log("Wishlist synced with customer account.");
+      });
+    {% endif %}
+  });
+</script>
+
+
+✅ 4. Wishlist Page (Visible to All Users)
+   - Create a page template: page.wishlist.json
+
+   {
+  "name": "Wishlist",
+  "sections": {
+    "main": {
+      "type": "wishlist-section"
+    }
+  },
+  "order": ["main"]
+}
+
+
+- Create section: sections/wishlist-section.liquid
+
+{% if customer %}
+  {% assign wishlist_handles = customer.metafields.wishlist.handles %}
+{% endif %}
+
+<div id="wishlist-container">
+  <h1 class="text-3xl font-bold mb-4">Your Wishlist</h1>
+  <div id="wishlist-products" class="grid grid-cols-2 gap-4"></div>
+</div>
+
+<script>
+  async function renderWishlistProducts(handles) {
+    const container = document.getElementById('wishlist-products');
+    container.innerHTML = '';
+
+    for (let handle of handles) {
+      const res = await fetch(`/products/${handle}?view=card`);
+      const html = await res.text();
+      const div = document.createElement('div');
+      div.innerHTML = html;
+      container.appendChild(div);
+    }
+
+    if (handles.length === 0) {
+      container.innerHTML = '<p>No products in wishlist.</p>';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    {% if customer %}
+      const handles = "{{ wishlist_handles | join: ',' }}".split(',').filter(Boolean);
+    {% else %}
+      const handles = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    {% endif %}
+    renderWishlistProducts(handles);
+  });
+</script>
+
+
+✅ 5. Create product-card.liquid Snippets 
+    - snippets/product-card.liquid
+
+    <div class="border rounded-xl p-4 shadow hover:shadow-lg transition">
+  <a href="{{ product.url }}" class="block mb-2">
+    <img 
+      src="{{ product.featured_image | image_url: width: 400 }}"
+      alt="{{ product.title }}"
+      class="w-full h-auto rounded-lg"
+    />
+  </a>
+
+  <h2 class="text-lg font-semibold">
+    <a href="{{ product.url }}">{{ product.title }}</a>
+  </h2>
+
+  <p class="text-sm text-gray-500 mb-2">
+    {{ product.price | money }}
+  </p>
+
+  <button 
+    class="remove-from-wishlist bg-red-500 text-white px-3 py-1 rounded"
+    data-handle="{{ product.handle }}"
+  >
+    Remove
+  </button>
+</div>
+
+
+✅ 6. Create a View Template for AJAX
+   - templates/product.card.liquid
+   {% layout none %}
+{% assign handle = request.path | split: '/' | last | split: '?' | first %}
+{% assign product = all_products[handle] %}
+{% if product %}
+  {% render 'product-card', product: product %}
+{% else %}
+  <div class="text-red-500">Product not found: {{ handle }}</div>
+{% endif %}
+
+
+
+✅ 7. Add JavaScript to Handle "Remove from Wishlist"
+
+<script>
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-from-wishlist')) {
+      const handle = e.target.dataset.handle;
+      let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      wishlist = wishlist.filter(h => h !== handle);
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+
+      // Remove from UI
+      e.target.closest('div').remove();
+
+      // Optionally show toast
+      alert("Removed from wishlist");
+    }
+  });
+</script>
+
+
