@@ -4,7 +4,13 @@
 
 <div id="wishlist-container">
   <h1 class="text-3xl font-bold mb-4">Your Wishlist</h1>
-  <div id="wishlist-products" class="grid grid-cols-2 gap-4"></div>
+  <div id="wishlist-products" class="grid grid-cols-4 gap-4"></div>
+  
+ <div id="wishlist-empty-message" class="hidden text-center">
+   <p class="text-center text-gray-600">No products in wishlist.</p>
+   <a href="/collections/all" class="rounded-3xl bg-black px-5 py-2 text-white inline-block">Back to Shopping</a>
+</div>
+ 
 </div>
 
 <script>
@@ -14,14 +20,14 @@
 
     for (let handle of handles) {
       const res = await fetch(`/products/${handle}?view=card`);
-      const html = await res.text();
+      const html = await res.text();   
       const div = document.createElement('div');
       div.innerHTML = html;
       container.appendChild(div);
     }
 
     if (handles.length === 0) {
-      container.innerHTML = '<p>No products in wishlist.</p>';
+      container.innerHTML = '<div class="text-center"><p class="text-center text-gray-600">No products in wishlist.</p><a href="/collections/all" class="rounded-3xl bg-black px-5 py-2 text-white inline-block">Back to Shopping</a></div>';
     }
   }
 
@@ -32,5 +38,25 @@
       const handles = JSON.parse(localStorage.getItem('wishlist') || '[]');
     {% endif %}
     renderWishlistProducts(handles);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-from-wishlist')) {
+      const handle = e.target.dataset.handle;
+      let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      wishlist = wishlist.filter(h => h !== handle);
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+       console.log(wishlist);
+      // Remove from UI
+      e.target.closest('div').remove();
+
+      // Optionally show toast
+      alert("Removed from wishlist");
+
+       // 🔍 Check if empty
+  if (wishlist.length === 0) {
+    document.getElementById("wishlist-empty-message")?.classList.remove("hidden");
+  }
+    }
   });
 </script>
