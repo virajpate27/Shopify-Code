@@ -1,0 +1,24 @@
+<div class="border rounded-xl p-4 shadow hover:shadow-lg transition">
+  <a href="{{ product.url }}" class="block mb-2">
+    <img 
+      src="{{ product.featured_image | image_url: width: 400 }}"
+      alt="{{ product.title }}"
+      class="w-full h-auto rounded-lg"
+    />
+  </a>
+
+  <h2 class="text-lg font-semibold">
+    <a href="{{ product.url }}">{{ product.title }}</a>
+  </h2>
+
+  <p class="text-sm text-gray-500 mb-2">
+    {{ product.price | money }}
+  </p>
+
+  <button 
+    class="remove-from-wishlist bg-red-500 text-white px-3 py-1 rounded"
+    data-handle="{{ product.handle }}"
+  >
+    Remove
+  </button>
+</div>
