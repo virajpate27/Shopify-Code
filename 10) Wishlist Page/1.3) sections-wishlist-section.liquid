@@ -1,0 +1,36 @@
+{% if customer %}
+  {% assign wishlist_handles = customer.metafields.wishlist.handles %}
+{% endif %}
+
+<div id="wishlist-container">
+  <h1 class="text-3xl font-bold mb-4">Your Wishlist</h1>
+  <div id="wishlist-products" class="grid grid-cols-2 gap-4"></div>
+</div>
+
+<script>
+  async function renderWishlistProducts(handles) {
+    const container = document.getElementById('wishlist-products');
+    container.innerHTML = '';
+
+    for (let handle of handles) {
+      const res = await fetch(`/products/${handle}?view=card`);
+      const html = await res.text();
+      const div = document.createElement('div');
+      div.innerHTML = html;
+      container.appendChild(div);
+    }
+
+    if (handles.length === 0) {
+      container.innerHTML = '<p>No products in wishlist.</p>';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    {% if customer %}
+      const handles = "{{ wishlist_handles | join: ',' }}".split(',').filter(Boolean);
+    {% else %}
+      const handles = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    {% endif %}
+    renderWishlistProducts(handles);
+  });
+</script>
