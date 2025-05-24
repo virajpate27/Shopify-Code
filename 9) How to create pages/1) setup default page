@@ -1,0 +1,35 @@
+How to Create Custom Pages Using JSON Templates
+
+1. Create a JSON Template (Default page Template)
+
+- Under Templates, click Add a new template 
+
+- templates/page.json
+{
+  "sections": { 
+    "main": { 
+      "type": "page-default", 
+      "settings": {} 
+    } 
+  },
+  "order": ["main"]
+}
+
+
+2.  Create a Section: sections/page-default.liquid
+
+ <div class=" w-[80%] mx-auto">
+    <div class="page-title text-center">
+      <h1>{{ page.title | escape }}</h1>
+    </div>
+    <div class="rte">
+      {{ page.content }}
+    </div>
+  </div>
+
+{% schema %}
+  {
+    "name": "Main page",
+    "settings": []
+  }
+{% endschema %}
