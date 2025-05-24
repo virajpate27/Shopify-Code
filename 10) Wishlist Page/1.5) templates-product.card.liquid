@@ -1,0 +1,8 @@
+{% layout none %}
+{% assign handle = request.path | split: '/' | last | split: '?' | first %}
+{% assign product = all_products[handle] %}
+{% if product %}
+  {% render 'product-card', product: product %}
+{% else %}
+  <div class="text-red-500">Product not found: {{ handle }}</div>
+{% endif %}
