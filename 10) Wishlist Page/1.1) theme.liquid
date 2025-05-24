@@ -1,0 +1,40 @@
+before the </body> tag or in your main JS file:
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const wishlistBtns = document.querySelectorAll('.wishlist-btn');
+
+    wishlistBtns.forEach(button => {
+      const handle = button.dataset.productHandle;
+
+      // Set initial state
+      if (isInWishlist(handle)) {
+        button.textContent = '❤️ In Wishlist';
+      }
+
+      button.addEventListener('click', () => {
+        toggleWishlist(handle);
+        button.textContent = isInWishlist(handle) ? '❤️ In Wishlist' : '❤️ Add to Wishlist';
+      });
+    });
+
+    function getWishlist() {
+      return JSON.parse(localStorage.getItem('wishlist')) || [];
+    }
+
+    function isInWishlist(handle) {
+      return getWishlist().includes(handle);
+    }
+
+    function toggleWishlist(handle) {
+      let wishlist = getWishlist();
+
+      if (wishlist.includes(handle)) {
+        wishlist = wishlist.filter(h => h !== handle);
+      } else {
+        wishlist.push(handle);
+      }
+
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    }
+  });
+</script>
