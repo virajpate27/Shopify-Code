@@ -1,40 +1,73 @@
 before the </body> tag or in your main JS file:
+
 <script>
+  // Store wishlist in localStorage
+  function getLocalWishlist() {
+    return JSON.parse(localStorage.getItem('wishlist') || '[]');
+  }
+
+  function saveLocalWishlist(wishlist) {
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  }
+
+  function addToWishlist(handle) {
+    let wishlist = getLocalWishlist();
+    if (!wishlist.includes(handle)) {
+      wishlist.push(handle);
+      saveLocalWishlist(wishlist);
+    }
+  }
+
+  function removeFromWishlist(handle) {
+    let wishlist = getLocalWishlist();
+    wishlist = wishlist.filter(h => h !== handle);
+    saveLocalWishlist(wishlist);
+  }
+
+  function toggleWishlist(handle) {
+    let wishlist = getLocalWishlist();
+    if (wishlist.includes(handle)) {
+      removeFromWishlist(handle);
+      alert('Removed from wishlist');
+    } else {
+      addToWishlist(handle);
+      alert('Added to wishlist');
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    const wishlistBtns = document.querySelectorAll('.wishlist-btn');
-
-    wishlistBtns.forEach(button => {
-      const handle = button.dataset.productHandle;
-
-      // Set initial state
-      if (isInWishlist(handle)) {
-        button.textContent = '❤️ In Wishlist';
-      }
-
-      button.addEventListener('click', () => {
+    document.querySelectorAll('.wishlist-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const handle = btn.dataset.handle;
         toggleWishlist(handle);
-        button.textContent = isInWishlist(handle) ? '❤️ In Wishlist' : '❤️ Add to Wishlist';
       });
     });
 
-    function getWishlist() {
-      return JSON.parse(localStorage.getItem('wishlist')) || [];
-    }
+    // ✅ If logged in, sync localStorage → metafield
+    {% if customer %}
+      const metafieldHandles = "{{ customer.metafields.wishlist.handles | join: ',' }}".split(',');
+      const localWishlist = getLocalWishlist();
+      const combined = Array.from(new Set([...metafieldHandles, ...localWishlist])).filter(Boolean);
 
-    function isInWishlist(handle) {
-      return getWishlist().includes(handle);
-    }
-
-    function toggleWishlist(handle) {
-      let wishlist = getWishlist();
-
-      if (wishlist.includes(handle)) {
-        wishlist = wishlist.filter(h => h !== handle);
-      } else {
-        wishlist.push(handle);
-      }
-
-      localStorage.setItem('wishlist', JSON.stringify(wishlist));
-    }
+      fetch('/account/metafields', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          metafield: {
+            namespace: "wishlist",
+            key: "handles",
+            value: combined.join(','),
+            type: "list.single_line_text_field"
+          }
+        })
+      }).then(() => {
+        localStorage.removeItem('wishlist'); // clear local after sync
+        console.log("Wishlist synced with customer account.");
+      });
+    {% endif %}
   });
 </script>
+
