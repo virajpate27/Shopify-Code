@@ -1,0 +1,62 @@
+1. Create a JSON Template
+ - Under Templates, click Add a new template
+ - templates/page.about.json
+
+ {
+  "name": "About Page",
+  "sections": {
+    "main": {
+      "type": "about-custom"
+    }
+  },
+  "order": ["main"]
+}
+
+
+2. Create a Section: sections/about-custom.liquid
+
+<section class="container mx-auto px-4 py-10">
+  <h1 class="text-4xl font-bold mb-6">{{ section.settings.heading }}</h1>
+  <p class="text-lg text-gray-700 leading-relaxed">
+    {{ section.settings.text }}
+  </p>
+
+  {% if section.settings.image != blank %}
+    <div class="mt-6">
+      <img src="{{ section.settings.image | image_url: width: 800 }}" alt="About Image" class="rounded-lg shadow-md">
+    </div>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "About Custom Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "About Us"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Welcome to our store. We are passionate about great products!"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Content"
+    }
+  ]
+}
+{% endschema %}
+
+
+NOTE : WE CAN CREATE MULTIPLE OF PAGES USING THIS STEPS.
