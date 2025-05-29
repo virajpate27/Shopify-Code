@@ -1,0 +1,95 @@
+{% schema %}
+{
+  "name": "Register",
+  "class": "main-register-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_first_name",
+      "label": "Show first name field",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_last_name",
+      "label": "Show last name field",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "accepts_marketing",
+      "label": "Marketing checkbox",
+      "options": [
+        {
+          "value": "hidden",
+          "label": "Hidden"
+        },
+        {
+          "value": "optional",
+          "label": "Optional"
+        },
+        {
+          "value": "required",
+          "label": "Required"
+        }
+      ],
+      "default": "optional"
+    },
+    {
+      "type": "url",
+      "id": "redirect_url",
+      "label": "Redirect after registration"
+    }
+  ]
+}
+{% endschema %}
+
+
+<div class="customer register mx-auto w-full">
+  <div class="main-register py-7">
+    <h1 class="mb-6 text-center">Create Account</h1>
+
+    {% form 'create_customer' %}
+    {{ form.errors | default_errors }}
+    <div class="main-form m-auto w-1/2">
+      {% if section.settings.show_first_name %}
+      <div class="mb-4">
+        <input type="text" name="customer[first_name]" id="first_name" placeholder="Enter First Name" class="w-full rounded border px-5 py-2 shadow" />
+      </div>
+       {% endif %}
+
+       {% if section.settings.show_last_name %}
+      <div class="mb-4">
+        <input type="text" name="customer[last_name]" id="last_name" placeholder="Enter Last Name" class="w-full rounded border px-5 py-2 shadow" />
+      </div>
+       {% endif %}
+
+      <div class="mb-4">
+        <input type="email" name="customer[email]" id="email" placeholder="Enter Email" class="w-full rounded border px-5 py-2 shadow" />
+      </div>
+
+      
+      <div class="mb-4">
+        <input type="password" name="customer[password]" id="password" placeholder="Enter Password" class="w-full rounded border px-5 py-2 shadow" />
+      </div>
+      
+
+      {% if section.settings.accepts_marketing != 'hidden' %}
+      <div class="mb-4">
+        <input type="checkbox" name="customer[accepts_marketing]" id="accepts_marketing" {% if section.settings.accepts_marketing == 'required' %}required{% endif %} />
+        <label for="accepts_marketing">Subscribe to our newsletter</label>
+      </div>
+      {% endif %}
+
+      <div class="mb-4">
+        <button type="submit" class="rounded bg-black px-4 py-2 text-white">Create Account</button>
+      </div>
+
+      <div class="login-link">
+        <p class="text-center">Already have an account? <a href="/account/login">Log in</a></p>
+      </div>
+    </div>
+    {% endform %}
+
+  </div>
+</div>
