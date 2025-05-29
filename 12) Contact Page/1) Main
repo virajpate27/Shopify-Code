@@ -1,0 +1,7 @@
+Step 1) Create Section 
+      - sections/contact-form.liquid 
+      - We can add multiple of fields in contact form 
+
+Step 2) Create Template 
+     - templates/page.contact.json
+     
