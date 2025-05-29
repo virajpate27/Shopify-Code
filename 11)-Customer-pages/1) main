@@ -1,0 +1,19 @@
+Step 1) Create all templates of customer in json files.
+      - templates/customers/account.json
+      - templates/customers/templates/customers/activate_account.json
+      - templates/customers/addresses.json 
+      - templates/customers/login.json
+      - templates/customers/order.json
+      - templates/customers/register.json
+      - templates/customers/reset_password.json
+
+Step 2 ) Create Sections for each above template.
+      - sections/main-account.liquid
+      - sections/main-activate-account.liquid 
+      - sections/main-addresses.liquid
+      - sections/main-login.liquid
+      - sections/order-details.liquid
+      - sections/main-register.liquid
+      - sections/customer-reset-password.liquid
+
+Note: First Create Sections and then Templates.
