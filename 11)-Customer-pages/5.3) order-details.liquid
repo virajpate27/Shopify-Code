@@ -1,0 +1,116 @@
+{% schema %}
+{
+  "name": "Order Details",
+  "class": "order-details-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_product_images",
+      "label": "Show product images",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_line_item_properties",
+      "label": "Show line item properties",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shipping_address",
+      "label": "Show shipping address",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_billing_address",
+      "label": "Show billing address",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+
+<div class="order-details">
+  <h2>Order Details</h2>
+  
+  <table class="order-line-items">
+    <thead>
+      <tr>
+        {% if section.settings.show_product_images %}<th>Image</th>{% endif %}
+        <th>Product</th>
+        <th>SKU</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for line_item in order.line_items %}
+        <tr>
+          {% if section.settings.show_product_images %}
+            <td>
+              <img src="{{ line_item.image | img_url: '100x' }}" alt="{{ line_item.title | escape }}">
+            </td>
+          {% endif %}
+          <td>
+            {{ line_item.title | link_to: line_item.product.url }}
+            {% if section.settings.show_line_item_properties and line_item.properties.size > 0 %}
+              <dl class="item-properties">
+                {% for property in line_item.properties %}
+                  <dt>{{ property.first }}:</dt>
+                  <dd>{{ property.last }}</dd>
+                {% endfor %}
+              </dl>
+            {% endif %}
+          </td>
+          <td>{{ line_item.sku }}</td>
+          <td>{{ line_item.price | money }}</td>
+          <td>{{ line_item.quantity }}</td>
+          <td>{{ line_item.quantity | times: line_item.price | money }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="{% if section.settings.show_product_images %}5{% else %}4{% endif %}">Subtotal</td>
+        <td>{{ order.subtotal_price | money }}</td>
+      </tr>
+      
+      {% for shipping_method in order.shipping_methods %}
+        <tr>
+          <td colspan="{% if section.settings.show_product_images %}5{% else %}4{% endif %}">Shipping ({{ shipping_method.title }})</td>
+          <td>{{ shipping_method.price | money }}</td>
+        </tr>
+      {% endfor %}
+      
+      {% for tax_line in order.tax_lines %}
+        <tr>
+          <td colspan="{% if section.settings.show_product_images %}5{% else %}4{% endif %}">Tax ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)</td>
+          <td>{{ tax_line.price | money }}</td>
+        </tr>
+      {% endfor %}
+      
+      <tr>
+        <td colspan="{% if section.settings.show_product_images %}5{% else %}4{% endif %}"><strong>Total</strong></td>
+        <td><strong>{{ order.total_price | money }}</strong></td>
+      </tr>
+    </tfoot>
+  </table>
+  
+  <div class="order-addresses">
+    {% if section.settings.show_shipping_address %}
+      <div class="shipping-address">
+        <h3>Shipping Address</h3>
+        {{ order.shipping_address | format_address }}
+      </div>
+    {% endif %}
+    
+    {% if section.settings.show_billing_address %}
+      <div class="billing-address">
+        <h3>Billing Address</h3>
+        {{ order.billing_address | format_address }}
+      </div>
+    {% endif %}
+  </div>
+</div>
