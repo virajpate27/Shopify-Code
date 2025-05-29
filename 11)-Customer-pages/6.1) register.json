@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-register",
+      "settings": {
+        "show_first_name": true,
+        "show_last_name": true,
+        "accepts_marketing": "optional",
+        "redirect_url": "/account"
+      }
+    }
+  },
+  "order": ["main"]
+}
