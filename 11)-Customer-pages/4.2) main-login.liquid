@@ -1,0 +1,99 @@
+{% schema %}
+{
+  "name": "Login",
+  "class": "main-login-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_register",
+      "label": "Enable registration",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_guest_checkout",
+      "label": "Enable guest checkout",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_login",
+      "label": "Show social login",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+
+<div class="customer login mx-auto w-full">
+  <div class="main-register py-7">
+    <h1 id="logintitle" class="mb-6 text-center">Login</h1>
+
+    
+    <div class="main-form m-auto w-1/2">
+      {% form 'customer_login' %}
+    {{ form.errors | default_errors }}
+      <div id="mlogin" class="border p-6 rounded mb-8">
+        <div class="mb-4">
+        <input type="email" name="customer[email]" id="customer_email" class="w-full rounded border px-5 py-2 shadow" placeholder=" Enter Email" />
+      </div>
+      <div class="mb-4">
+        <input type="password" name="customer[password]" id="customer_password" class="w-full rounded border px-5 py-2 shadow" placeholder="Enter Password" />
+      </div>
+
+      <div class="mb-4">
+        <a href="#recover" onclick="showRecoverForm()">Forgot password?</a>
+      </div>
+      <div>
+        <button type="submit" class="inline-block rounded bg-black px-4 py-2 text-white">Sign In</button>
+      </div>
+      </div>
+     {% endform %}
+
+      <div id="recover" class="border p-6 rounded mb-8" style="display: none;">
+        <h2 class="mb-4">Reset Password</h2>
+        {% form 'recover_customer_password' %}
+        <div class="mb-4">
+          <input type="email" name="email" id="recover-email" class="w-full rounded border px-5 py-2 shadow" placeholder=" Enter Email" />
+        </div>
+
+        <button type="submit" class="inline-block rounded bg-black px-4 py-2 text-white mr-5">Submit</button>
+        <a href="#" onclick="hideRecoverForm()">Cancel</a>
+         {% endform %}
+      </div>
+
+      
+     {% if section.settings.enable_register %}
+      <div class="register-section text-center mb-7">
+        <h2 class="mb-2">New Customer?</h2>
+        <a href="/account/register" class="inline-block rounded bg-black px-4 py-2 text-white">Create account</a>
+      </div>
+     {% endif %}
+
+      
+     
+    </div>
+  </div>
+</div>
+
+  
+
+<script>
+  function showRecoverForm() {
+    document.getElementById('recover').style.display = 'block';
+    document.getElementById('mlogin').style.display = 'none';
+    document.querySelector('#logintitle').innerText= "Reset Password";
+    return false;
+  }
+  
+  function hideRecoverForm() {
+    document.getElementById('recover').style.display = 'none';
+    document.getElementById('mlogin').style.display = 'block';
+    document.querySelector('#logintitle').innerText= "Login";
+    return false;
+  }
+</script>
+
+
+
+  
