@@ -1,0 +1,57 @@
+{% schema %}
+  {
+    "name": "Contact Form",
+    "tag": "section",
+    "settings": []
+  }
+{% endschema %}
+
+<div class="contact-form-wrapper w-[45%] m-auto px-8">
+   <h1 class="text-2xl font-bold mb-6">Contact Us</h1>
+
+  {% form 'contact' %}
+    {% if form.posted_successfully? %}
+      <p class="text-green-600 mb-4">Thank you! Your message has been sent successfully.</p>
+    {% elsif form.errors %}
+      <div class="text-red-600 mb-4">
+        <p><strong>There were some problems with your submission:</strong></p>
+        <ul>
+          {% for field in form.errors %}
+            <li>{{ field | capitalize }} - {{ form.errors.messages[field] }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <div class="mb-4">
+      <label for="ContactFormName" class="block font-medium mb-1">Name</label>
+      <input type="text" id="ContactFormName" name="contact[name]" class="w-full border p-2" required>
+    </div>
+
+    <div class="mb-4">
+      <label for="ContactFormEmail" class="block font-medium mb-1">Email</label>
+      <input type="email" id="ContactFormEmail" name="contact[email]" class="w-full border p-2" required>
+    </div>
+
+    <div class="mb-4">
+      <label for="ContactFormPhone" class="block font-medium mb-1">Phone</label>
+      <input type="tel" id="ContactFormPhone" name="contact[phone]" class="w-full border p-2">
+    </div>
+
+    <div class="mb-4">
+    <label for="ContactFormTime" class="block mb-1">Preferred Contact Time</label>
+    <select name="contact[preferred_time]" id="ContactFormTime" class="w-full border p-2">
+      <option value="Morning">Morning</option>
+      <option value="Afternoon">Afternoon</option>
+      <option value="Evening">Evening</option>
+    </select>
+  </div>
+
+    <div class="mb-4">
+      <label for="ContactFormMessage" class="block font-medium mb-1">Message</label>
+      <textarea id="ContactFormMessage" name="contact[body]" rows="5" class="w-full border p-2" required></textarea>
+    </div>
+
+    <button type="submit" class="bg-black text-white px-6 py-2 rounded">Send</button>
+  {% endform %}
+</div>
