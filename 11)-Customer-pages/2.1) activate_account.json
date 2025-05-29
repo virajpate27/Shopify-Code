@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-activate-account",
+      "settings": {
+        "heading": "Activate your account",
+        "subtext": "Create your password to activate your account"
+      }
+    }
+  },
+  "order": ["main"]
+}
