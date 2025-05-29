@@ -1,0 +1,30 @@
+{
+  "sections": {
+    "order-header": {
+      "type": "order-header",
+      "settings": {
+        "show_order_date": true,
+        "show_order_status": true,
+        "show_order_total": true
+      }
+    },
+    "order-details": {
+      "type": "order-details",
+      "settings": {
+        "show_product_images": true,
+        "show_line_item_properties": true,
+        "show_shipping_address": true,
+        "show_billing_address": true
+      }
+    },
+    "order-tracking": {
+      "type": "order-tracking",
+      "settings": {
+        "show_fulfillment_status": true,
+        "show_tracking_numbers": true,
+        "show_tracking_urls": true
+      }
+    }
+  },
+  "order": ["order-header", "order-details", "order-tracking"]
+}
