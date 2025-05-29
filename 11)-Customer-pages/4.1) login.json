@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-login",
+      "settings": {
+        "enable_register": true,
+        "enable_guest_checkout": true,
+        "show_social_login": true
+      }
+    }
+  },
+  "order": ["main"]
+}
