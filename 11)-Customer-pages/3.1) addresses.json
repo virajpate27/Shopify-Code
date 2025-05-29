@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-addresses",
+      "settings": {
+        "enable_default_address": true,
+        "show_company_field": true,
+        "show_phone_field": true
+      }
+    }
+  },
+  "order": ["main"]
+}
