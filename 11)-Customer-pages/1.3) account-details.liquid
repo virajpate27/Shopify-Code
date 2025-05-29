@@ -1,0 +1,64 @@
+{% schema %}
+{
+  "name": "Account Details",
+  "class": "account-details-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_name",
+      "label": "Show name",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_email",
+      "label": "Show email",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Show phone",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_address",
+      "label": "Show address",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+
+<div class="mx-auto my-10 max-w-4xl rounded-lg bg-white p-6 shadow-lg">
+  <h2 class="mb-4 text-2xl font-semibold">Account Details</h2>
+  <div class="mb-4">
+    {% if section.settings.show_name %}
+    <div class="detail-row mb-2"><strong>Name:</strong> {{ customer.name }}</div>
+    {% endif %} {% if section.settings.show_email %}
+    <div class="detail-row mb-2"><strong>Email:</strong> {{ customer.email }}</div>
+    {% endif %} {% if section.settings.show_phone and customer.phone %}
+    <div class="detail-row"><strong>Phone:</strong> {{ customer.phone }}</div>
+    {% endif %}
+  </div>
+
+  {% if section.settings.show_address %}
+  <div class="addresses mb-4">
+    <h3 class="mb-2 font-bold">Addresses</h3>
+    {% if customer.addresses_count > 0 %}
+    <div class="default-address mb-2">
+      <h4>Default Address</h4>
+      {{ customer.default_address | format_address }}
+    </div>
+    <a href="/account/addresses" class="view-addresses rounded bg-black px-2 py-1.5 text-white">View all addresses ({{ customer.addresses_count }})</a>
+    {% else %}
+    <p>You don't have any addresses saved yet.</p>
+    <a href="/account/addresses" class="add-address">Add an address</a>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- <a href="/account/edit" class="edit-details inline-block rounded bg-black px-2 py-1.5 text-white">Edit account details</a> -->
+  <a href="{{ routes.account_logout_url }}" class="edit-details inline-block rounded bg-red-600 px-2 py-1.5 text-white">Log out</a>
+</div>
