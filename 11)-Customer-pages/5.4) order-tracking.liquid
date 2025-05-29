@@ -1,0 +1,77 @@
+{% schema %}
+{
+  "name": "Order Tracking",
+  "class": "order-tracking-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_fulfillment_status",
+      "label": "Show fulfillment status",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tracking_numbers",
+      "label": "Show tracking numbers",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tracking_urls",
+      "label": "Show tracking URLs",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+
+<div class="order-tracking">
+  <h2>Order Tracking</h2>
+  
+  {% if section.settings.show_fulfillment_status %}
+    <div class="fulfillment-status">
+      <strong>Fulfillment Status:</strong> {{ order.fulfillment_status_label }}
+    </div>
+  {% endif %}
+  
+  {% if order.fulfillments.size > 0 %}
+    <div class="fulfillments">
+      {% for fulfillment in order.fulfillments %}
+        <div class="fulfillment">
+          <h3>Fulfillment #{{ forloop.index }}</h3>
+          
+          {% if section.settings.show_tracking_numbers and fulfillment.tracking_number %}
+            <div class="tracking-info">
+              <strong>Tracking Company:</strong> {{ fulfillment.tracking_company }}<br>
+              <strong>Tracking Number:</strong> {{ fulfillment.tracking_number }}<br>
+              
+              {% if section.settings.show_tracking_urls and fulfillment.tracking_url %}
+                <strong>Tracking URL:</strong> 
+                <a href="{{ fulfillment.tracking_url }}" target="_blank">Track Package</a>
+              {% endif %}
+            </div>
+          {% endif %}
+          
+          <table class="fulfilled-items">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in fulfillment.fulfillment_line_items %}
+                <tr>
+                  <td>{{ item.line_item.title }}</td>
+                  <td>{{ item.quantity }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>Your order has not been fulfilled yet.</p>
+  {% endif %}
+</div>
