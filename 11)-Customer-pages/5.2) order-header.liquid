@@ -1,0 +1,57 @@
+{% schema %}
+{
+  "name": "Order Header",
+  "class": "order-header-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_order_date",
+      "label": "Show order date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_order_status",
+      "label": "Show order status",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_order_total",
+      "label": "Show order total",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+
+<div class="order-header">
+  <h1>Order {{ order.name }}</h1>
+  
+  <div class="order-meta">
+    {% if section.settings.show_order_date %}
+      <div class="order-date">
+        <strong>Date:</strong> {{ order.created_at | date: "%B %d, %Y %I:%M %p" }}
+      </div>
+    {% endif %}
+    
+    {% if section.settings.show_order_status %}
+      <div class="order-status">
+        <strong>Status:</strong> {{ order.fulfillment_status_label }}
+      </div>
+    {% endif %}
+    
+    {% if section.settings.show_order_total %}
+      <div class="order-total">
+        <strong>Total:</strong> {{ order.total_price | money_with_currency }}
+      </div>
+    {% endif %}
+  </div>
+  
+  {% if order.cancelled %}
+    <div class="order-cancelled">
+      <h3>Cancelled on {{ order.cancelled_at | date: "%B %d, %Y %I:%M %p" }}</h3>
+      <p>Reason: {{ order.cancel_reason }}</p>
+    </div>
+  {% endif %}
+</div>
