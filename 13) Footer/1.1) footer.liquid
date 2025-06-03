@@ -1,0 +1,95 @@
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "footer_logo",
+      "label": "Footer Logo"
+    },
+    {
+      "type": "text",
+      "id": "footer_text",
+      "label": "Copyright Text",
+      "default": "© {{ 'now' | date: '%Y' }} Your Store. All rights reserved."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu Link List",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Select Menu"
+        }
+      ]
+    },
+    {
+      "type": "store_info",
+      "name": "Store Information",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "info",
+          "label": "Store Info",
+          "default": "123 Main Street, City, Country"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        {
+          "type": "menu"
+        },
+        {
+          "type": "store_info"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.footer-section a:hover {
+  text-decoration: underline;
+}
+{% endstylesheet %}
+
+<div class="footer-section bg-gray-100 px-6 py-10 text-sm">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'menu' %}
+          <div>
+            <h3 class="font-semibold mb-2">{{ block.settings.menu.title }}</h3>
+            <ul>
+              {% for link in block.settings.menu.links %}
+                <li><a href="{{ link.url }}" class="text-gray-700 hover:text-black">{{ link.title }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+
+        {% when 'store_info' %}
+          <div>
+            <h3 class="font-semibold mb-2">Store Info</h3>
+            <p class="text-gray-700 whitespace-pre-line">{{ block.settings.info }}</p>
+          </div>
+      {% endcase %}
+    {% endfor %}
+  </div>
+
+  <div class="border-t mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm">
+    {% if section.settings.footer_logo %}
+      <img src="{{ section.settings.footer_logo | image_url: width: 150 }}" alt="Footer Logo" class="mb-4 md:mb-0" />
+    {% endif %}
+    <p>{{ section.settings.footer_text }}</p>
+  </div>
+</div>
