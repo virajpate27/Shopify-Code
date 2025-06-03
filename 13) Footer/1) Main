@@ -1,0 +1,28 @@
+Step 1)  Create custom footer
+✅ sections/footer.liquid (the template logic and HTML)
+✅ sections/footer-group.json (optional, if grouping is needed in JSON templates)
+✅ Dynamic blocks:
+   - Menu Link List
+   - Store Information
+   
+Step 2) Cretate sections/footer.liquid
+Code In - 1.1 file
+
+
+Step 3) Create section/main-footer-group.json
+{
+  "type": "footer",
+  "name": "Footer Group",
+  "sections": {
+    "footer": {
+      "type": "footer"
+    }
+  },
+  "order": ["footer"]
+}
+
+
+Step 4) Open theme.liquid file 
+ {% liquid
+        sections 'main-footer-group'
+      %}
