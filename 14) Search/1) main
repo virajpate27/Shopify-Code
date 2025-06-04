@@ -1,0 +1,53 @@
+✅ 1. Create a Search Template
+templates/search.json
+{
+  "sections": {
+    "main": {
+      "type": "search-template"
+    }
+  },
+  "order": ["main"]
+}
+
+
+✅ 2. Create a Search Section.
+sections/search-template.liquid
+
+{% comment %} Search Results Section {% endcomment %}
+<section class="container mx-auto px-4 py-6">
+  <h1 class="text-3xl font-semibold mb-6">Search results for: "{{ search.terms }}"</h1>
+
+  {% if search.results_count == 0 %}
+    <p>No results found.</p>
+  {% else %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {% for item in search.results %}
+        {% if item.object_type == 'product' %}
+          <div class="border p-4 rounded">
+            <a href="{{ item.url }}">
+              <img src="{{ item.featured_image | image_url: width: 400 }}" alt="{{ item.title }}" class="w-full h-48 object-cover mb-2" />
+              <h2 class="text-lg font-bold">{{ item.title }}</h2>
+              <p class="text-gray-700">{{ item.price | money }}</p>
+            </a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+
+
+✅ 3. Add a Search Form (Header or Anywhere)
+
+<form action="/search" method="get" class="flex">
+  <input 
+    type="search" 
+    name="q" 
+    placeholder="Search products..." 
+    class="border px-4 py-2 rounded-l w-full"
+    required
+  >
+  <button type="submit" class="bg-black text-white px-4 py-2 rounded-r">
+    Search
+  </button>
+</form>
