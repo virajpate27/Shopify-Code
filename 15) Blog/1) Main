@@ -1,0 +1,20 @@
+🧩 Step-by-Step: Create Blog and Article Pages
+
+✅ 1. Create the Blog Template
+templates/blog.json
+
+✅ 2. Create the Blog Section
+sections/main-blog.liquid
+
+✅ 3. Create Article Template
+templates/article.json
+
+✅ 4. Create the Article Section
+sections/main-article.liquid
+
+✅ 5. Assign Templates
+Go to Online Store > Blog Posts → Choose or create a blog
+
+Assign the blog template to your blog page
+
+Assign the article template to each blog post (optional if using default)
