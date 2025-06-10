@@ -11,7 +11,7 @@ Example Use Cases:
 {{ product.metafields.details.fabric }}
 
 
-2) Metaobjects (like custom Dynamic fields)
+2) Metaobjects (Create reusable custom content types)
  - Metaobjects are custom content types you define yourself. 
  - They are more structured and reusable than regular metafields.
 
