@@ -1,0 +1,75 @@
+You sell custom mobile covers and want to:
+
+- Create a list of phone models (like iPhone 16, Samsung S24).
+- Reuse this list across products.
+- Show phone model details on the product page.
+
+🛠️ Step 1: Create a Metaobject Definition (in Shopify Admin)
+
+Go to:
+Shopify Admin > Content > Metaobjects > Create definition
+
+🆕 Metaobject Name: Phone Model
+
+Field Name -	Field Type
+model_name -	Single line text
+brand	Single - line text
+launch_year -	Number
+model_image -	File (image)
+
+Click Save.
+
+
+🧱 Step 2: Add Metaobject Entries
+
+Now create entries for each model:
+
+Entry 1:
+model_name: iPhone 16
+brand: Apple
+launch_year: 2024
+model_image: [Upload image]
+
+Entry 2:
+model_name: Samsung S24
+brand: Samsung
+launch_year: 2024
+model_image: [Upload image]
+
+
+🔗 Step 3: Add a Metafield to Products
+
+Go to:
+Shopify Admin > Settings > Custom Data > Products > Add definition
+
+Metafield Name: phone_model_ref
+- Type: Metaobject reference
+- Metaobject type: Phone Model
+Click Save.
+
+
+💻 Step 4: Display Metaobject Data on Product Page (Liquid Code)
+
+Online Store > Themes > Customize > Product Page > Edit Code
+
+- Inside product.liquid or main-product.liquid, add:
+
+{% assign phone_model = product.metafields.custom.phone_model_ref.value %}
+
+{% if phone_model %}
+  <div class="phone-model-details">
+    <h3>Phone Model: {{ phone_model.model_name }}</h3>
+    <p>Brand: {{ phone_model.brand }}</p>
+    <p>Launch Year: {{ phone_model.launch_year }}</p>
+    <img src="{{ phone_model.model_image | image_url: width: 300 }}" alt="{{ phone_model.model_name }}">
+  </div>
+{% endif %}
+
+
+
+
+
+
+
+
+
