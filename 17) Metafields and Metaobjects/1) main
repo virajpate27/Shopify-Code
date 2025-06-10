@@ -1,0 +1,21 @@
+- Metafields and metaobjects help us to store and display custom information on products, collections, customers, orders, and more.
+
+1) Metafields (like custom fields)
+— they allow you to store extra information about standard Shopify resources (like products, variants, collections, orders, etc.).
+
+Example Use Cases:
+- Add a "Material" field to products.
+- Store "Care Instructions" for clothing.
+- Add a custom size chart URL for each product.
+
+{{ product.metafields.details.fabric }}
+
+
+2) Metaobjects (like custom Dynamic fields)
+ - Metaobjects are custom content types you define yourself. 
+ - They are more structured and reusable than regular metafields.
+
+Example Use Cases:
+ - Define a Model metaobject for different phone models.
+ - Create a Lookbook metaobject to use in multiple products.
+ - Build a FAQ metaobject for your product pages.
