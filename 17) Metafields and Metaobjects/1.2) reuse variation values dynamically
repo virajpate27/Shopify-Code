@@ -1,0 +1,27 @@
+✅ Step-by-Step Guide
+
+1. Create a Metaobject Definition
+ - Go to Shopify Admin > Content > Metaobjects.
+ - Click "Create definition".
+ - Give it a name like Phone Models.
+ - Add fields like:
+    - Title (type: Single line text)
+    - Optionally, a Slug or Handle for reference.
+
+
+2. Add Entries to Your Metaobject
+- Go back to Metaobjects > Phone Models.
+- Click "Add entry".
+- Add all models:
+ - iPhone 16
+ - iPhone 16 Plus
+ - iPhone 15
+ - iPhone 15 Plus
+
+ 3. Link Metaobjects to Your Products
+ - In your Product Metaobject definition, create a field called Model (type: Metaobject reference, referencing the Phone Models definition).
+ - You can enable "List of values" if you want to allow multiple models per product.
+
+ 4. Use It Dynamically
+ - Now, when creating or editing a product or another metaobject that includes the Model field, you can select from the already-created models.
+ - You don’t have to recreate or retype model names.
