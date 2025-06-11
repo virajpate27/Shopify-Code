@@ -1,0 +1,32 @@
+body {
+  background-color: var(--color-bg);
+  background-image: var(--color-bg-gradient);
+  color: var(--color-text);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-heading);
+}
+
+.btn-primary {
+  color: var(--btn-primary-color);
+  background: var(--btn-primary-bg-color);
+}
+
+.btn-primary:hover {
+  color: var(--btn-primary-hover-text);
+  background: var(--btn-primary-hover-bg);
+}
+
+.btn-outline {
+  color: var(--btn-outline-color);
+  border: 1px solid var(--btn-outline-border-color);
+}
+
+.btn-link {
+  color: var(--btn-link-text);
+}
+
+.btn-link:hover {
+  color: var(--btn-link-hover-text);
+}
