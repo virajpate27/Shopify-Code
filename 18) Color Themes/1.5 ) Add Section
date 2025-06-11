@@ -1,0 +1,71 @@
+{
+"type": "color_scheme",
+"id": "color_scheme",
+"label": "Color scheme",
+"default": "scheme-1"
+}
+
+{% schema %}
+  {
+    "name": "Image Text",
+    "tag": "section",
+    "class": "imagetext",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Select Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "img-id",
+        "label": "Main Image"  
+      },
+      {
+        "type": "header",
+        "content": "Add Content"
+      },
+      {
+        "type": "text",
+         "id": "content-title",
+         "label": "Main Title"
+      },
+      {
+        "type": "textarea",
+        "id": "content-para",
+        "label": "Paragraph"
+      },
+      {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+      
+    ],
+    "presets": [
+      {
+        "name": "Image Text"
+      }
+    ]
+  }
+{% endschema %}
+
+{%- liquid
+   assign color_scheme = section.settings.color_scheme
+-%}
+
+ <div class="sec-imgtext color-{{ color_scheme }}">
+   <div class="container flex">
+     <div class="leftside">
+       <img src="{{ section.settings.img-id | img_url: 'master' }}" alt="Image alt text" />
+     </div>
+     <div class="rightside">
+          <h1 class="h1">Test Section</h1>
+          <div class="btn-primary">Primary Button</div>
+           <div class="btn-outline">Outline Button</div>
+        <h2 class="main-title">{{ section.settings.content-title }}</h2>
+        <p class="main-para">{{ section.settings.content-para }}</p>
+     </div>
+   </div>
+   
+ </div>
