@@ -1,0 +1,83 @@
+{
+    "name": "Typography",
+    "settings": [
+      {
+         "type": "header",
+        "content": "Body"
+      },
+      {
+                "type": "font_picker",
+                "id": "b_font_family",
+                "label": "Font Family",
+                "default": "work_sans_n4"
+      },
+      {
+                "type": "range",
+                "id": "body_font_size",
+                "label": "Font Size",
+                "default": 14,
+                "min": 0,
+                "max": 60,
+                "unit": "px"
+      },
+       {
+        "type": "range",
+        "id": "body_font_weight",
+        "min": 300,
+        "max": 700,
+        "step": 100,
+        "label": "Font Weight",
+        "default": 400
+      },
+       {
+        "type": "header",
+        "content": "Heading"
+      },
+      {
+                "type": "font_picker",
+                "id": "head_font_family",
+                "label": "Font Family",
+                "default": "work_sans_n4"
+      },
+      {
+                "type": "range",
+                "id": "heading_font_size",
+                "label": "Font Size",
+                "default": 26,
+                "min": 0,
+                "max": 60,
+                "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "heading_font_weight",
+        "min": 300,
+        "max": 700,
+        "step": 100,
+        "label": "Font Weight",
+        "default": 400
+      },
+      {
+         "type": "header",
+        "content": "Menu Font Size"
+      },
+       {
+                "type": "range",
+                "id": "menu_font_size",
+                "label": "Font Size",
+                "default": 14,
+                "min": 0,
+                "max": 60,
+                "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "menu_font_weight",
+        "min": 300,
+        "max": 700,
+        "step": 100,
+        "label": "Font Weight",
+        "default": 400
+      },
+    ]
+  },
