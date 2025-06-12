@@ -1,0 +1,56 @@
+✅ Step-by-Step: Add Custom Font in Shopify
+🔹 Step 1: Prepare Your Font Files
+ake sure you have your font files in formats like:
+
+- .woff or .woff2 (recommended for web)
+- Optional: .ttf, .eot, .svg (older formats)
+
+Let’s say you have a font named MyFont.woff2.
+
+🔹 Step 2: Upload the Font to Your Theme
+1) Go to your Shopify admin → Online Store → Themes.
+2) Click Actions → Edit Code on your live (or draft) theme.
+3) In the left sidebar, scroll down to Assets, then click “Add a new asset”.
+4) Upload your MyFont.woff2 (or any other font file).
+
+🔹 Step 3: Add @font-face in CSS
+1) In the Assets folder, open base.css (or theme.css, styles.css, etc.).
+2) Add the following code at the top:
+
+@font-face {
+  font-family: 'MyFont';
+  src: url('{{ 'MyFont.woff2' | asset_url }}') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+🔹 Step 4: Apply the Font in CSS
+body {
+  font-family: 'MyFont', sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: 'MyFont', serif;
+}
+
+
+
+
+🧠 Optional: Add Font Setting in settings_schema.json
+To allow merchants to select the font from the Theme Editor:
+
+{
+  "type": "font_picker",
+  "id": "custom_font",
+  "label": "Choose custom font"
+}
+
+Then in your CSS file:
+
+body {
+  font-family: {{ settings.custom_font.family }}, sans-serif;
+}
+
+But this only works for Google Fonts or fonts available in Shopify's font library — not for uploaded fonts.
+
