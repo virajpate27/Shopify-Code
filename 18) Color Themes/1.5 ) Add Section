@@ -59,13 +59,13 @@
      <div class="leftside">
        <img src="{{ section.settings.img-id | img_url: 'master' }}" alt="Image alt text" />
      </div>
-     <div class="rightside">
+      <div class="rightside">
           <h1 class="h1">Test Section</h1>
           <div class="btn-primary">Primary Button</div>
            <div class="btn-outline">Outline Button</div>
+        <div class="btn-link">Button Link</div>
         <h2 class="main-title">{{ section.settings.content-title }}</h2>
         <p class="main-para">{{ section.settings.content-para }}</p>
      </div>
-   </div>
    
  </div>
