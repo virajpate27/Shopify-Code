@@ -1,0 +1,29 @@
+  <style>
+      :root {
+        --font-family: {{ settings.b_font_family.family }}, {{ settings.b_font_family.fallback_families }};
+        --heading_font-family: {{ settings.head_font_family.family }}, {{ settings.head_font_family.fallback_families }};
+        --body_font-size: {{ settings.body_font_size }}px;
+        --heading_font-size: {{ settings.heading_font_size }}px;
+         --menu_font-size: {{ settings.menu_font_size }}px;
+        --body_font-weight: {{ settings.body_font_weight }};
+        --heading_font-weight: {{ settings.heading_font_weight }};
+        --menu_font_weight: {{ settings.menu_font_weight }};
+        
+       }
+
+      body {
+        font-family: var(--font-family);
+        font-size: var(--body_font-size);
+        font-weight: var(--body_font-weight);
+        background-color: var(--background-color);
+        color: var(--text-color);
+      }
+
+      h1,h2,h3,h4,h5,h6{
+        font-family: var(--heading_font-family);
+        /* font-size: var(--heading_font-size)!important;
+        font-weight: var(--heading_font-weight)!important; */
+        color: var(--heading-color);
+      }
+
+  </style>
