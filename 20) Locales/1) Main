@@ -1,0 +1,49 @@
+- Locales refer to the language files 
+- used to manage the text and translations displayed in your theme.
+- multi-language store by customizing and translating all visible text — including buttons, labels, messages, etc.
+
+✅ What Are Locales in Shopify?
+- Locale files are JSON files located in the locales/ folder of your theme.
+- Each file corresponds to a language (e.g., en.default.json, fr.default.json).
+
+📁 Example: locales/en.default.json
+
+{
+  "general": {
+    "welcome": "Welcome to our store!",
+    "search": {
+      "placeholder": "Search products..."
+    }
+  },
+  "cart": {
+    "empty": "Your cart is empty",
+    "checkout": "Proceed to checkout"
+  }
+}
+
+👀 How it Appears in Liquid:
+<p>{{ 'general.welcome' | t }}</p>
+<input placeholder="{{ 'general.search.placeholder' | t }}">
+<p>{{ 'cart.empty' | t }}</p>
+
+
+✅ NOTE : If you want jn sceme code the create new file "en.default.schema.json" file in Locale folder and add code.
+
+{
+"sections": {
+    "all": {
+      "section_padding": {
+        "top": {
+          "label": "Main Title"
+        }
+      }
+    }
+  }
+}
+
+in sceme file,
+ {
+  "type": "text",
+  "id": "content-title",
+  "label": "t:sections.all.section_padding.top.label"
+ },
