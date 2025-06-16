@@ -1,48 +1,34 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="light"> <!-- default theme here -->
-<head>
-  <meta charset="UTF-8">
-  <title>Themed Page</title>
-  <style>
-    :root[data-theme="light"] {
-      --text: #04191b;
-      --background: #edfdfd;
-      --primary: #11737e;
-      --secondary: #7474ec;
-      --accent: #481bc5;
-    }
-    :root[data-theme="dark"] {
-      --text: #e4f9fb;
-      --background: #021010;
-      --primary: #82e4ee;
-      --secondary: #13138a;
-      --accent: #6638e4;
-    }
+🎨 Meaning and Common Use Cases
 
-    body {
-      color: var(--text);
-      background-color: var(--background);
-    }
+1. Primary Color (--primary)
+ - This is the main brand color or the color you want most associated with your UI.
 
-    .btn {
-      background-color: var(--primary);
-      color: var(--text);
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Hello World</h1>
-  <button class="btn" onclick="toggleTheme()">Toggle Theme</button>
+Common Uses:
+Buttons (<button>, CTA)
+Links (<a>)
+Navigation bar background
+Active tabs or selected items
+Progress bar
+Form inputs (focused border)
 
-  <script>
-    function toggleTheme() {
-      const html = document.documentElement;
-      const currentTheme = html.getAttribute('data-theme');
-      html.setAttribute('data-theme', currentTheme === 'light' ? 'dark' : 'light');
-    }
-  </script>
-</body>
-</html>
+
+2. Secondary Color (--secondary)
+- A supporting color that complements the primary. Used for secondary actions or highlights..
+
+Common Uses:
+Secondary buttons
+Badges
+Card outlines or headers
+Background elements for contrast
+Hover/active states
+
+3. Accent Color (--accent)
+- A bold, attention-grabbing color used sparingly for highlights or decorative purposes.
+
+Common Uses:
+Icons or badges
+Highlight text or labels
+Borders or underlines on hover
+Toggle switches, sliders, checkboxes
+Hover or focus outlines
+
