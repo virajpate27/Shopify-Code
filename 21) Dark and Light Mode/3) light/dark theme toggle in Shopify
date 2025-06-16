@@ -1,0 +1,88 @@
+✅ 1. Add CSS Variables in Your Shopify Theme
+In your main CSS file (e.g. base.css, theme.css, or theme.liquid inside assets/), add:
+
+:root[data-theme="light"] {
+  --text: #04191b;
+  --background: #edfdfd;
+  --primary: #11737e;
+  --secondary: #7474ec;
+  --accent: #481bc5;
+}
+
+:root[data-theme="dark"] {
+  --text: #e4f9fb;
+  --background: #021010;
+  --primary: #82e4ee;
+  --secondary: #13138a;
+  --accent: #6638e4;
+}
+
+/* Example usage */
+body {
+  background-color: var(--background);
+  color: var(--text);
+}
+
+.button {
+  background-color: var(--primary);
+  color: var(--text);
+}
+
+
+✅ 2. Add Theme Toggle Button in Liquid
+Anywhere in your theme (e.g. header.liquid, theme.liquid, or footer.liquid), add:
+<button id="toggle-theme" style="cursor: pointer;">Toggle Theme</button>
+
+
+✅ 3. Add JavaScript to Handle Theme Switching
+In theme.liquid (inside the <head>), or in a dedicated theme.js file, add:
+
+<script>
+  (function () {
+    const root = document.documentElement;
+    const storedTheme = localStorage.getItem('theme') || 'light';
+    root.setAttribute('data-theme', storedTheme);
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const button = document.getElementById('toggle-theme');
+      if (!button) return;
+
+      button.addEventListener('click', function () {
+        const currentTheme = root.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        root.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      });
+    });
+  })();
+</script>
+
+✅ 4. Use Theme Variables in Your Custom CSS
+.product-card {
+  background-color: var(--background);
+  color: var(--text);
+}
+
+.product-button {
+  background-color: var(--primary);
+  color: var(--text);
+}
+
+
+✅ Optional: Hide Button with Theme Setting
+
+1) Add a setting in config/settings_schema.json:
+
+{
+  "type": "checkbox",
+  "id": "enable_dark_mode_toggle",
+  "label": "Enable Dark Mode Toggle",
+  "default": true
+}
+
+2) Use it in Liquid:
+{% if settings.enable_dark_mode_toggle %}
+  <button id="toggle-theme">Toggle Theme</button>
+{% endif %}
+
+
