@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <title>UI Kit Example</title>
+
+    <style>
+      :root[data-theme="light"] {
+        --text: #04191b;
+        --background: #edfdfd;
+        --primary: #11737e;
+        --secondary: #7474ec;
+        --accent: #481bc5;
+      }
+
+      :root[data-theme="dark"] {
+        --text: #e4f9fb;
+        --background: #021010;
+        --primary: #82e4ee;
+        --secondary: #13138a;
+        --accent: #6638e4;
+      }
+
+      body {
+        font-family: sans-serif;
+        background-color: var(--background);
+        color: var(--text);
+        margin: 0;
+        padding: 2rem;
+      }
+      h1 {
+        margin-bottom: 1rem;
+      }
+      .button-primary {
+        background-color: var(--primary);
+        color: var(--text);
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .button-secondary {
+        background-color: var(--secondary);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        border: none;
+      }
+      .card {
+        background-color: var(--secondary);
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+      }
+      .link {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 2px solid transparent;
+      }
+      .link:hover {
+        border-bottom: 2px solid var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>UI Kit</h1>
+
+    <div class="card">
+      <h2>Card Title</h2>
+      <p>
+        This is a card using <strong>--secondary</strong> as the background.
+      </p>
+      <a href="#" class="link">Learn more</a>
+    </div>
+
+    <button class="button-primary">Primary Action</button>
+    <button class="button-secondary">Secondary Action</button>
+
+    <br /><br />
+    <button onclick="toggleTheme()">Toggle Theme</button>
+
+    <script>
+       
+      function toggleTheme() {
+        const current = document.documentElement.getAttribute("data-theme");
+        console.log(current)
+        document.documentElement.setAttribute(
+          "data-theme",
+          current === "light" ? "dark" : "light"
+        );
+      }
+    </script>
+  </body>
+</html>
