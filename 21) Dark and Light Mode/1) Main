@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light"> <!-- default theme here -->
+<head>
+  <meta charset="UTF-8">
+  <title>Themed Page</title>
+  <style>
+    :root[data-theme="light"] {
+      --text: #04191b;
+      --background: #edfdfd;
+      --primary: #11737e;
+      --secondary: #7474ec;
+      --accent: #481bc5;
+    }
+    :root[data-theme="dark"] {
+      --text: #e4f9fb;
+      --background: #021010;
+      --primary: #82e4ee;
+      --secondary: #13138a;
+      --accent: #6638e4;
+    }
+
+    body {
+      color: var(--text);
+      background-color: var(--background);
+    }
+
+    .btn {
+      background-color: var(--primary);
+      color: var(--text);
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hello World</h1>
+  <button class="btn" onclick="toggleTheme()">Toggle Theme</button>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      html.setAttribute('data-theme', currentTheme === 'light' ? 'dark' : 'light');
+    }
+  </script>
+</body>
+</html>
