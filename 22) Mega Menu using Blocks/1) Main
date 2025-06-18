@@ -1,0 +1,16 @@
+- We Used Dawn theme and you've added a "Mega menu with collection" block in header.liquid
+ e.g. check in 1.1 file
+
+-  in header for mega menu, header-dropdown-menu and drawer menu (Mobile menu) are diffrent snipets used in Dawn Theme. 
+   - header-dropdown-menu
+   - header-mega-menu
+   - header-drawer (Mobile menu)
+
+- first we open header-mega-menu and add code 
+  - "Right inside the <div class="mega-menu__content ...">, after your existing loop for childlink, add this logic to inject the custom block content."
+  - e.g. in 1.2 file 
+
+- then we open header-drawer (Mobile menu) and add code 
+  - after your existing loop for childlink
+  - e.g in 1.3 file 
+
