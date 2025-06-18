@@ -1,0 +1,47 @@
+   <!-- Custom Block Logic -->
+{%- for block in section.blocks -%}
+  {%- if block.type == 'menu_collection' and block.settings.text == link.title -%}
+    <div class="mega-menu__collections">
+      <div class="mega-menu__collection-grid">
+        {%- if block.settings.collection_1 != blank -%}
+          <div class="mega-menu__collection-item">
+            <a href="{{ block.settings.collection_1.url }}">
+             
+              {% if block.settings.collection1_img != blank %}
+                <img src="{{ block.settings.collection1_img | image_url: width: 300 }}" alt="{{ block.settings.collection_1.title | escape }}">
+                {% else %}
+                <img src="{{ block.settings.collection_1.featured_image | image_url: width: 300 }}" alt="{{ block.settings.collection_1.title | escape }}">
+              {% endif %}
+              <div class="collection-title">{{ block.settings.collection_1.title }}</div>
+            </a>
+          </div>
+        {%- endif -%}
+        {%- if block.settings.collection_2 != blank -%}
+          <div class="mega-menu__collection-item">
+            <a href="{{ block.settings.collection_2.url }}">
+               {% if block.settings.collection2_img != blank %}
+                <img src="{{ block.settings.collection2_img | image_url: width: 300 }}" alt="{{ block.settings.collection_2.title | escape }}">
+                {% else %}
+                <img src="{{ block.settings.collection_2.featured_image | image_url: width: 300 }}" alt="{{ block.settings.collection_2.title | escape }}">
+              {% endif %}
+          
+              <div class="collection-title">{{ block.settings.collection_2.title }}</div>
+            </a>
+          </div>
+        {%- endif -%}
+        {%- if block.settings.collection_3 != blank -%}
+          <div class="mega-menu__collection-item">
+            <a href="{{ block.settings.collection_3.url }}">
+              {% if block.settings.collection3_img != blank %}
+                <img src="{{ block.settings.collection3_img | image_url: width: 300 }}" alt="{{ block.settings.collection_3.title | escape }}">
+                {% else %}
+                <img src="{{ block.settings.collection_3.featured_image | image_url: width: 300 }}" alt="{{ block.settings.collection_3.title | escape }}">
+              {% endif %}
+              <div class="collection-title">{{ block.settings.collection_3.title }}</div>
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+{%- endfor -%}
