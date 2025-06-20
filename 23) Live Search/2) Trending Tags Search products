@@ -1,0 +1,45 @@
+1) Add code to "config/settings_schema.json"
+ 
+ {
+    "name": "Serach Behaviour",
+    "settings": [
+       {
+        "type": "textarea",
+        "id": "popular_key_word",
+        "label": "Popular search keywords",
+        "info": "Recommend Popular searched keywords in your store to customers. For example: t-shirt, dress, jean"
+      },
+    ]
+  },
+
+  2) Add this code where use want to use in liquid file 
+
+  {% liquid
+  assign theme_st = settings
+  assign popular_key_word = theme_st.popular_key_word
+%}
+
+<div class="quick-search mb-5">
+      {%- capture link_quick_search -%}
+        {{ routes.search_url }}?type=product&options%5Bfields%5D=title,tag,vendor,product_type,variants.title,variants.sku&options%5Bunavailable_products%5D=last&options%5Bprefix%5D=last&q=
+      {%- endcapture -%}
+       <h3 class="quick-search-title h5 mb-5 mt-5">Trending Search</h3>
+       <ul class="quick-search-list mt-15 list-unstyled flex flex-wrap gap-5">
+       
+         {%- assign popular_key_word = popular_key_word | replace: ' ,', ',' | replace: ', ', ',' | split: ',' -%}
+         {% for qr in popular_key_word %}
+           {%- assign quick_text = qr | strip -%}
+           {% if quick_text %}
+             <li>
+                <a
+                  class="quick-url no-underline lh-normal  border px-5 py-3 rounded-3xl  inline-block"
+                  href="{{ link_quick_search }}{{ quick_text }}"
+                  aria-label="{{ quick_text }}"
+                >
+                  {{ quick_text }}
+                </a>
+              </li>
+           {% endif %}
+         {% endfor %}
+       </ul>
+    </div>
