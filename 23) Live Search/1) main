@@ -1,0 +1,66 @@
+1) Html code
+ <div class="relative w-full max-w-md mx-auto mt-4">
+        <input
+          type="text"
+          id="liveSearchInput"
+          placeholder="I'm Looking For..."
+          class="w-full border border-gray-300 rounded-3xl px-4 py-2 focus:outline-none"
+          oninput="liveSearch(this.value)"
+        />
+        <div
+          id="searchResults"
+          class="absolute z-50 w-full bg-white border border-gray-300 mt-1 rounded shadow hidden"
+        ></div>
+  </div>
+
+
+  2) Javascript code
+
+   <script>
+  function liveSearch(query) {
+    const resultBox = document.getElementById("searchResults");
+    if (query.length < 2) {
+      resultBox.classList.add("hidden");
+      resultBox.innerHTML = "";
+      return;
+    }
+
+    fetch(`/search/suggest.json?q=${query}&resources[type]=product&resources[limit]=5`)
+      .then((res) => res.json())
+      .then((data) => {
+        const products = data.resources.results.products;
+        if (products.length === 0) {
+          resultBox.innerHTML = "<div class='p-4 text-gray-500'>No products found</div>";
+        } else {
+          resultBox.innerHTML = products
+            .map((product) => {
+              const image = product.featured_image?.url || "";
+              const price = product.price;
+
+              return `
+                <a href="${product.url}" class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100">
+                  <img src="${image}" alt="${product.title}" class="w-12 h-12 object-cover rounded border" />
+                  <div>
+                    <div class="font-medium text-sm text-gray-800">${product.title}</div>
+                    <div class="text-sm text-gray-600">₹${(price / 100).toFixed(2)}</div>
+                  </div>
+                </a>`;
+            })
+            .join("");
+        }
+        resultBox.classList.remove("hidden");
+      })
+      .catch((err) => {
+        resultBox.innerHTML = "<div class='p-4 text-red-500'>Error loading results</div>";
+        resultBox.classList.remove("hidden");
+      });
+  }
+
+  document.addEventListener("click", function (e) {
+    const box = document.getElementById("searchResults");
+    const input = document.getElementById("liveSearchInput");
+    if (!box.contains(e.target) && e.target !== input) {
+      box.classList.add("hidden");
+    }
+  });
+</script>
