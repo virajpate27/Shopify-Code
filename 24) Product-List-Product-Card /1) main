@@ -1,0 +1,73 @@
+Costume Product List Show Using Product Card 
+
+Step 1) Create field in setting_scema file . e.g. 
+       {
+    "name": "Serach Behaviour",
+    "settings": [
+      {
+        "type": "product_list",
+         "id": "main_product_list",
+         "label": "Popular Products",
+         "limit": 5
+      }
+    ]
+  },
+
+  Step 2) Select Products from customise 
+
+
+  Step 3) if we use in section then create section file and add below code 
+
+        {% assign product_list = settings.main_product_list %}
+
+        {% if product_list != blank %}
+  <div class="popular-products">
+    <h3>Popular Products</h3>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      {% for product in product_list %}
+        <a href="{{ product.url }}">
+              <img src="{{ product.featured_image | image_url: width: 300 }}" alt="{{ product.title }}" class="mb-1">
+              <h4 class="text-sm">{{ product.title }}</h4>
+              <p class="text-orange-600 font-semibold text-sm">₹{{ product.price | money_without_trailing_zeros }}</p>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+
+Step 4) if we want show product using product card then render product card 
+      a) create product card 
+         -Snippest/product-card.liquid 
+         - add below code 
+       {% comment %} Snippet: product-card.liquid, get value from another file like prop in react {% endcomment %}
+        {% assign product = product %}
+
+       {% if product %}
+         <div class="product-card">
+           <a href="{{ product.url }}">
+             <img src="{{ product.featured_image | image_url: width: 600, height: 600, crop: 'center' }}" alt="{{ product.title }}" class="mb-2 w-full">
+             <h4 class="text-sm font-medium">{{ product.title }}</h4>
+             <p class="text-orange-600 font-bold">{{ product.price | money_without_trailing_zeros }}</p>
+          </a>
+        </div>
+       {% endif %}
+
+
+Step 5) Change Section file code
+
+{% assign product_list = settings.main_product_list %}
+
+{% if product_list != blank %}
+  <div class="popular-products">
+    <h3>Popular Products</h3>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      {% for product in product_list %}
+        {% render 'product-card', product:product %}
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+
+      
